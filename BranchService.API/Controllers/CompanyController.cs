@@ -1,0 +1,95 @@
+using BranchService.Application.Requests;
+using BranchService.Application.Response;
+using BranchService.Application.UseCases.Companies.Commands.CreateCompany;
+using BranchService.Application.UseCases.Companies.Commands.DeleteCompany;
+using BranchService.Application.UseCases.Companies.Commands.UpdateCompany;
+using BranchService.Application.UseCases.Companies.Queries.GetAllCompanies;
+using BranchService.Application.UseCases.Companies.Queries.GetCompanyById;
+using BranchService.Application.UseCases.Companies.Queries.GetCompanyInfoById;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace BranchService.API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class CompanyController : ControllerBase
+{
+    private readonly ILogger<CompanyController> _logger;
+    private readonly IMediator _mediator;
+
+    public CompanyController( ILogger<CompanyController> logger, IMediator mediator)
+    {
+        _logger = logger;
+        _mediator = mediator;
+    }
+    
+    [HttpGet("get-all-companies")]
+    [Authorize]
+    public async Task<ActionResult<PagedResponse<CompanyResponseModel>>> GetAllAsync([FromQuery]int pageNumber=1)
+    {
+        _logger.LogInformation("Received request to get all companies. PageNumber: {PageNumber}, PageSize: 15",
+            pageNumber);
+
+        var query = new GetAllCompaniesQuery(pageNumber);
+        var companies = await _mediator.Send(query);
+        return Ok(companies);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<CompanyResponseModel>> GetByIdAsync([FromRoute] int id)
+    {
+        _logger.LogInformation("Received request to get company by Id: {companyId}", id);
+        var query = new GetCompanyByIdQuery(id);
+        var company = await _mediator.Send(query);
+        _logger.LogInformation("Successfully returned company with Id: {companyId}", id);
+
+        return Ok(company);
+    }
+
+
+    [HttpGet("company-info-by-id/{id}")]
+    [Authorize]
+    public async Task<ActionResult<CompanyByIdResponseModel>> GetCompanyInfoById([FromRoute] int id)
+    {
+        _logger.LogInformation("Received request to get company info by Id: {companyId}", id);
+        var query = new GetCompanyInfoByIdQuery(id);
+        var company = await _mediator.Send(query);
+        _logger.LogInformation("Successfully returned company info with Id: {companyId}", id);
+        return Ok(company);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> PostAsync([FromBody] CreateCompanyCommand request)
+    {
+        _logger.LogInformation("Received request to create new company. CompanyName: {companyName}",
+            request.CompanyName);
+        var createCompany = await _mediator.Send(request);
+        _logger.LogInformation("Successfully created company with Id: {companyId}", createCompany.Id);
+        return Ok(createCompany);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutAsync([FromRoute] int id, [FromBody] UpdateCompanyRequest request)
+    {
+        _logger.LogInformation("Received request to update company with Id: {companyId}", id);
+
+        var command = new UpdateCompanyCommand(id, request.CompanyName, request.Address, request.EmailAddress,
+            request.PhoneNumber);
+        
+        var update = await _mediator.Send(command);
+        _logger.LogInformation("Successfully updated company with Id: {companyId}", id);
+        return Ok(update);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+    {
+        _logger.LogInformation("Received request to delete company with Id: {companyId}", id);
+        var command = new DeleteCompanyCommand(id);
+        await _mediator.Send(command);
+        _logger.LogInformation("Successfully deleted company with Id: {companyId}", id);
+        return NoContent();
+    }
+}
