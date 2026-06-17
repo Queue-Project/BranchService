@@ -24,6 +24,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BranchService.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BranchService.IntegrationTest", "BranchService.IntegrationTest\BranchService.IntegrationTest.csproj", "{0DC2F661-106E-4F1F-8D62-46B4CEF855F3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BranchService.UnitTest", "BranchService.UnitTest", "{EA0F915D-11CC-4743-9D36-524C3AABFE6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BranchService.UnitTest", "BranchService.UnitTest\BranchService.UnitTest.csproj", "{A21B6817-5A17-41D7-901F-E631428C26D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +40,7 @@ Global
 		{456B0D2E-9E4D-438B-8C07-45D3EF57E773} = {7AF3EA6A-3814-4174-9339-EC29A0BFD427}
 		{3CC62F6B-0CF8-439A-A9FD-5081EACC7724} = {5086AD43-BFBF-4ABD-83A0-84238E1DA8A4}
 		{0DC2F661-106E-4F1F-8D62-46B4CEF855F3} = {9BF307A7-EFE0-460F-9DBD-F6364E5599D4}
+		{A21B6817-5A17-41D7-901F-E631428C26D7} = {EA0F915D-11CC-4743-9D36-524C3AABFE6D}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{60E55FFA-11E8-4EF4-BBCA-A9A4956EC947}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -62,5 +67,9 @@ Global
 		{0DC2F661-106E-4F1F-8D62-46B4CEF855F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DC2F661-106E-4F1F-8D62-46B4CEF855F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DC2F661-106E-4F1F-8D62-46B4CEF855F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A21B6817-5A17-41D7-901F-E631428C26D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A21B6817-5A17-41D7-901F-E631428C26D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A21B6817-5A17-41D7-901F-E631428C26D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A21B6817-5A17-41D7-901F-E631428C26D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
