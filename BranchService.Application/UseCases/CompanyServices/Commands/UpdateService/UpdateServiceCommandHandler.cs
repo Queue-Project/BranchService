@@ -29,6 +29,13 @@ public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand,
     {
         _logger.LogInformation("Updating service with Id {id}.", request.Id);
 
+        var company = await _dbContext.Companies.FirstOrDefaultAsync(s => s.Id == request.CompanyId, cancellationToken);
+        if (company== null)
+        {
+            _logger.LogWarning("Company with Id {id} not found.", request.CompanyId);
+            throw new HttpStatusCodeException(HttpStatusCode.NotFound, nameof(CompanyEntity));
+        }
+        
         var dbService = await _dbContext.CompanyServices.FirstOrDefaultAsync(s => s.Id == request.Id, cancellationToken);
         if (dbService == null)
         {

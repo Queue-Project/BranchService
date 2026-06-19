@@ -9,7 +9,7 @@ public class CreateBranchValidator: AbstractValidator<CreateBranchCommand>
     {
         RuleFor(s => s.CompanyId)
             .NotEmpty().WithMessage("CompanyId is required.")
-            .GreaterThan(0).WithMessage("CompanyId ,ust be greater than 0.");
+            .GreaterThan(0).WithMessage("CompanyId ,must be greater than 0.");
         
         RuleFor(s => s.BranchName)
             .NotEmpty().WithMessage("Branch name is required.");
