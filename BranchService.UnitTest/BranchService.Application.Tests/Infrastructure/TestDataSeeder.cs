@@ -40,6 +40,7 @@ public static class TestDataSeeder
                 PhoneNumber = "+992300000000",
                 CreatedAt = DateTimeOffset.UtcNow
             }
+            
         };
     }
 
