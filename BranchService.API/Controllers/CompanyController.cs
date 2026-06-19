@@ -51,7 +51,7 @@ public class CompanyController : ControllerBase
 
     [HttpGet("company-info-by-id/{id}")]
     [Authorize]
-    public async Task<ActionResult<CompanyByIdResponseModel>> GetCompanyInfoById([FromRoute] int id)
+    public async Task<ActionResult<CompanyByIdResponseModel>> GetCompanyInfoByIdAsync([FromRoute] int id)
     {
         _logger.LogInformation("Received request to get company info by Id: {companyId}", id);
         var query = new GetCompanyInfoByIdQuery(id);
