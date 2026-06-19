@@ -2,7 +2,7 @@ using BranchService.Application.UseCases.Companies.Commands.CreateCompany;
 using BranchService.Application.UseCases.CompanyServices.Commands.CreateService;
 using BranchService.Contracts.Events.CompanyEvents;
 using BranchService.Contracts.Events.CompanyServiceEvents;
-using BranchService.Infrastructura.Persistence.DataBase;
+using BranchService.Infrastructure.Persistence.DataBase;
 using BranchService.UnitTest.BranchService.Application.Tests.Infrastructure;
 using FluentAssertions;
 using MassTransit;

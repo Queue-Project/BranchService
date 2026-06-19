@@ -2,7 +2,7 @@ using System.Net;
 using BranchService.Application.Exceptions;
 using BranchService.Application.UseCases.Branches.Commands.CreateBranch;
 using BranchService.Contracts.Events.BranchEvents;
-using BranchService.Infrastructura.Persistence.DataBase;
+using BranchService.Infrastructure.Persistence.DataBase;
 using BranchService.UnitTest.BranchService.Application.Tests.Infrastructure;
 using FluentAssertions;
 using MassTransit;

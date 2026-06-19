@@ -1,4 +1,4 @@
-using BranchService.Infrastructura.Persistence.DataBase;
+using BranchService.Infrastructure.Persistence.DataBase;
 using Microsoft.EntityFrameworkCore;
 
 namespace BranchService.UnitTest.BranchService.Application.Tests.Infrastructure;

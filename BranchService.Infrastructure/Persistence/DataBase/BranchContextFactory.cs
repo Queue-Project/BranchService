@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace BranchService.Infrastructura.Persistence.DataBase;
+namespace BranchService.Infrastructure.Persistence.DataBase;
 
 public class BranchContextFactory:IDesignTimeDbContextFactory<BranchServiceDbContext>
 {

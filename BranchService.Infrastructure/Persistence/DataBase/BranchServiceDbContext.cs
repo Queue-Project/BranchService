@@ -1,9 +1,9 @@
 using BranchService.Application.Interfaces.Data;
 using BranchService.Domain.Models;
-using BranchService.Infrastructura.Persistence.TableConfiguration;
+using BranchService.Infrastructure.Persistence.TableConfiguration;
 using Microsoft.EntityFrameworkCore;
 
-namespace BranchService.Infrastructura.Persistence.DataBase;
+namespace BranchService.Infrastructure.Persistence.DataBase;
 
 public class BranchServiceDbContext : DbContext, IBranchServiceApplicationDbContext
 {

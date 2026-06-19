@@ -1,6 +1,6 @@
 using BranchService.Application.UseCases.BranchConfigurations.Queries.GetAllBranchConfigurations;
 using BranchService.Application.UseCases.Branches.Queries.GetAllBranches;
-using BranchService.Infrastructura.Persistence.DataBase;
+using BranchService.Infrastructure.Persistence.DataBase;
 using BranchService.UnitTest.BranchService.Application.Tests.Infrastructure;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;

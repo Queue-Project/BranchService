@@ -8,7 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BranchService.Domain", "Bra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BranchService.Contracts", "BranchService.Contracts", "{0AA42F4D-D141-446C-A02B-4E43C03882F8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BranchService.Infrastructura", "BranchService.Infrastructura", "{5086AD43-BFBF-4ABD-83A0-84238E1DA8A4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BranchService.Infrastructure", "BranchService.Infrastructure", "{5086AD43-BFBF-4ABD-83A0-84238E1DA8A4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BranchService.IntegrationTest", "BranchService.IntegrationTest", "{9BF307A7-EFE0-460F-9DBD-F6364E5599D4}"
 EndProject
@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BranchService.Contracts", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BranchService.Domain", "BranchService.Domain\BranchService.Domain.csproj", "{456B0D2E-9E4D-438B-8C07-45D3EF57E773}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BranchService.Infrastructura", "BranchService.Infrastructura\BranchService.Infrastructura.csproj", "{3CC62F6B-0CF8-439A-A9FD-5081EACC7724}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BranchService.Infrastructure", "BranchService.Infrastructure\BranchService.Infrastructure.csproj", "{3CC62F6B-0CF8-439A-A9FD-5081EACC7724}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BranchService.IntegrationTest", "BranchService.IntegrationTest\BranchService.IntegrationTest.csproj", "{0DC2F661-106E-4F1F-8D62-46B4CEF855F3}"
 EndProject

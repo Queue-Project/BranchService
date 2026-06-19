@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace BranchService.Infrastructura.Migrations
+namespace BranchService.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class CreateBranchServiceTables : Migration

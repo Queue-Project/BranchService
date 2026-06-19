@@ -2,7 +2,7 @@ using BranchService.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BranchService.Infrastructura.Persistence.TableConfiguration;
+namespace BranchService.Infrastructure.Persistence.TableConfiguration;
 
 public class CompanyTableConfiguration: IEntityTypeConfiguration<CompanyEntity>
 {

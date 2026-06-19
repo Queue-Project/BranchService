@@ -1,5 +1,5 @@
 using BranchService.Contracts.Requests;
-using BranchService.Infrastructura.Persistence.DataBase;
+using BranchService.Infrastructure.Persistence.DataBase;
 using BranchService.UnitTest.BranchService.Application.Tests.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Moq;

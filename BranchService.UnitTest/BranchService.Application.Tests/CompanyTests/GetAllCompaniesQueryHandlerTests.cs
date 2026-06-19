@@ -1,5 +1,5 @@
 using BranchService.Application.UseCases.Companies.Queries.GetAllCompanies;
-using BranchService.Infrastructura.Persistence.DataBase;
+using BranchService.Infrastructure.Persistence.DataBase;
 using BranchService.UnitTest.BranchService.Application.Tests.Infrastructure;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;

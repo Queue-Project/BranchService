@@ -28,7 +28,7 @@
     <ItemGroup>
       <ProjectReference Include="..\BranchService.API\BranchService.API.csproj" />
       <ProjectReference Include="..\BranchService.Application\BranchService.Application.csproj" />
-      <ProjectReference Include="..\BranchService.Infrastructura\BranchService.Infrastructura.csproj" />
+      <ProjectReference Include="..\BranchService.Infrastructure\BranchService.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
