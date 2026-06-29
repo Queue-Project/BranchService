@@ -8,7 +8,7 @@ public class BranchContextFactory:IDesignTimeDbContextFactory<BranchServiceDbCon
     public BranchServiceDbContext CreateDbContext(string[] args)
     {
         var optionBuilder = new DbContextOptionsBuilder<BranchServiceDbContext>();
-        optionBuilder.UseNpgsql("Host=localhost; Port=5432; Database=BranchService; Username=postgres; Password=b.sh.3242");
+        optionBuilder.UseNpgsql("Host=host.docker.internal; Port=5432; Database=BranchService; Username=postgres; Password=b.sh.3242");
         return new BranchServiceDbContext(optionBuilder.Options);
     }
 }

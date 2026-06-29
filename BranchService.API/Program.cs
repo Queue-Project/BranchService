@@ -17,9 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenLocalhost(5001, listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
+    options.ListenAnyIP(5001, listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
 
-    options.ListenLocalhost(5002, listenOptions => { listenOptions.Protocols = HttpProtocols.Http1; });
+    options.ListenAnyIP(5002, listenOptions => { listenOptions.Protocols = HttpProtocols.Http1; });
 });
 
 builder.Services.AddFluentValidation(fv => { fv.RegisterValidatorsFromAssemblyContaining<CreateCompanyValidator>(); });
