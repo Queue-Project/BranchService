@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace BranchService.Infrastructure.Persistence.DataBase;
 
@@ -8,7 +9,19 @@ public class BranchContextFactory:IDesignTimeDbContextFactory<BranchServiceDbCon
     public BranchServiceDbContext CreateDbContext(string[] args)
     {
         var optionBuilder = new DbContextOptionsBuilder<BranchServiceDbContext>();
-        optionBuilder.UseNpgsql("Host=host.docker.internal; Port=5432; Database=BranchService; Username=postgres; Password=b.sh.3242");
+        
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+        
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../QUserService.API"))
+            .AddJsonFile("appsettings.json", optional: false)
+            .AddJsonFile($"appsettings.{environment}.json", optional: true)
+            .AddEnvironmentVariables()
+            .Build();
+        
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        
+        optionBuilder.UseNpgsql(connectionString);
         return new BranchServiceDbContext(optionBuilder.Options);
     }
 }

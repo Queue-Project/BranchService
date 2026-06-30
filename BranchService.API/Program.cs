@@ -1,4 +1,5 @@
 using System.Text;
+using BranchService.API.Middlewares;
 using BranchService.Application;
 using BranchService.Application.Helpers;
 using BranchService.Application.Interfaces.Data;
@@ -114,11 +115,13 @@ var app = builder.Build();
 
 app.MapMagicOnionService<BranchService.Application.Services.BranchService>();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Docker")
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 app.MapControllers();
