@@ -4,6 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,7 +26,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BranchService.Infrastructura\BranchService.Infrastructura.csproj" />
+      <ProjectReference Include="..\BranchService.API\BranchService.API.csproj" />
+      <ProjectReference Include="..\BranchService.Infrastructure\BranchService.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

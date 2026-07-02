@@ -1,9 +1,10 @@
 using System.Text;
+using BranchService.API.Middlewares;
 using BranchService.Application;
 using BranchService.Application.Helpers;
 using BranchService.Application.Interfaces.Data;
 using BranchService.Application.Validators.CompanyValidators;
-using BranchService.Infrastructura.Persistence.DataBase;
+using BranchService.Infrastructure.Persistence.DataBase;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
@@ -17,9 +18,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenLocalhost(5001, listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
+    options.ListenAnyIP(5001, listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
 
-    options.ListenLocalhost(5002, listenOptions => { listenOptions.Protocols = HttpProtocols.Http1; });
+    options.ListenAnyIP(5002, listenOptions => { listenOptions.Protocols = HttpProtocols.Http1; });
 });
 
 builder.Services.AddFluentValidation(fv => { fv.RegisterValidatorsFromAssemblyContaining<CreateCompanyValidator>(); });
@@ -114,11 +115,13 @@ var app = builder.Build();
 
 app.MapMagicOnionService<BranchService.Application.Services.BranchService>();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Docker")
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 app.MapControllers();

@@ -35,7 +35,7 @@ public class CompanyServiceControllerTest : IClassFixture<QBranchServiceWebAppli
         var companyResult = await companyResponse.Content.ReadFromJsonAsync<CompanyResponseModel>();
         companyResult.ShouldNotBeNull();
         companyResult.Id.ShouldNotBe(0);
-        
+
         var createCompanyService = new CreateServiceCommand(
             CompanyId: companyResult.Id,
             ServiceName: "TestServiceName",
@@ -47,7 +47,7 @@ public class CompanyServiceControllerTest : IClassFixture<QBranchServiceWebAppli
         result.ShouldNotBeNull();
         result.Id.ShouldNotBe(0);
     }
-    
+
     [Fact]
     public async Task GetCompanyService_ExistingCompanyService_ReturnsSuccess()
     {
@@ -63,7 +63,7 @@ public class CompanyServiceControllerTest : IClassFixture<QBranchServiceWebAppli
         var companyCreatedResult = await companyCreatedResponse.Content.ReadFromJsonAsync<CompanyResponseModel>();
         companyCreatedResult.ShouldNotBeNull();
         companyCreatedResult.Id.ShouldNotBe(0);
-        
+
         var createCompanyService = new CreateServiceCommand(
             CompanyId: companyCreatedResult.Id,
             ServiceName: "TestServiceName",
@@ -71,11 +71,12 @@ public class CompanyServiceControllerTest : IClassFixture<QBranchServiceWebAppli
 
         var companyServiceCreatedResponse = await _client.PostAsJsonAsync("/api/CompanyService", createCompanyService);
         companyServiceCreatedResponse.EnsureSuccessStatusCode();
-        var companyServiceCreatedResult = await companyServiceCreatedResponse.Content.ReadFromJsonAsync<CompanyServiceResponseModel>();
+        var companyServiceCreatedResult =
+            await companyServiceCreatedResponse.Content.ReadFromJsonAsync<CompanyServiceResponseModel>();
         companyServiceCreatedResult.ShouldNotBeNull();
         companyServiceCreatedResult.Id.ShouldNotBe(0);
-      
-      
+
+
         var companyServiceId = companyServiceCreatedResult.Id;
         var response = await _client.GetAsync($"api/CompanyService/{companyServiceId}");
         response.EnsureSuccessStatusCode();
@@ -88,9 +89,8 @@ public class CompanyServiceControllerTest : IClassFixture<QBranchServiceWebAppli
     public async Task GetCompanyService_NonExistentCompanyService_ReturnsNotFound()
     {
         var nonExistentCompanyServiceId = 999;
-        var url = $"/api/Branch/{nonExistentCompanyServiceId}";
-       
-        var exception = await Assert.ThrowsAsync<HttpStatusCodeException>(() => _client.GetAsync(url));
-        exception.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+        var response = await _client.GetAsync($"api/CompanyService/{nonExistentCompanyServiceId}");
+
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 }
