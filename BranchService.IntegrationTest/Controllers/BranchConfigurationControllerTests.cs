@@ -127,10 +127,11 @@ public class BranchConfigurationControllerTests : IClassFixture<QBranchServiceWe
     [Fact]
     public async Task GetBranchConfiguration_NonExistentBranchConfiguration_ReturnsNotFound()
     {
-        var nonExistentBranchConfigurationId = 999;
-        var url = $"/api/BranchConfiguration/{nonExistentBranchConfigurationId}";
+        
+        var branchConfigurationId =999;
        
-        var exception = await Assert.ThrowsAsync<HttpStatusCodeException>(() => _client.GetAsync(url));
-        exception.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+        var response = await _client.GetAsync($"api/BranchConfiguration/{branchConfigurationId}"); 
+    
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound); 
     }
 }
