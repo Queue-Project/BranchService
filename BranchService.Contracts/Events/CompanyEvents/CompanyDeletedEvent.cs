@@ -8,4 +8,5 @@ public class CompanyDeletedEvent
     public string Address { get; set; }
     public string PhoneNumber { get; set; }
     public string EmailAddress { get; set; }
+    public AuditData? AuditData { get; set; }
 }
