@@ -1,7 +1,9 @@
 using System.Net;
 using BranchService.Application.Exceptions;
+using BranchService.Application.Helpers;
 using BranchService.Application.Interfaces.Data;
 using BranchService.Application.Response;
+using BranchService.Contracts.Events;
 using BranchService.Contracts.Events.CompanyEvents;
 using BranchService.Domain.Models;
 using MassTransit;
@@ -42,6 +44,9 @@ public class UpdateCompanyCommandHandler: IRequestHandler<UpdateCompanyCommand, 
         await _dbContext.SaveChangesAsync(cancellationToken);
         _logger.LogInformation("Company with Id {companyId} updated successfully", request.Id);
 
+        var entry = _dbContext.Entry(dbCompany);
+        var changes = AuditHelper.GetChanges(entry);
+        
         await _publishEndpoint.Publish(new CompanyUpdatedEvent
         {
             OccuredAt = DateTimeOffset.UtcNow,
@@ -49,7 +54,13 @@ public class UpdateCompanyCommandHandler: IRequestHandler<UpdateCompanyCommand, 
             CompanyName = dbCompany.CompanyName,
             Address = dbCompany.Address,
             EmailAddress = dbCompany.EmailAddress,
-            PhoneNumber = dbCompany.PhoneNumber
+            PhoneNumber = dbCompany.PhoneNumber,
+            AuditData = new AuditData
+            {
+                PerformedByUserId = 1,
+                PerformedByUserName = "systemAdmin",
+                Changes = changes
+            }
         }, cancellationToken);
 
         var response = new CompanyResponseModel()
