@@ -50,12 +50,13 @@ public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand,
         dbService.ServiceName = request.ServiceName;
         dbService.ServiceDescription = request.ServiceDescription;
 
+        var entry = _dbContext.Entry(dbService);
+        var changes = AuditHelper.GetChanges(entry);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("Service with Id {id} updated successfully.", request.Id);
 
-        var entry = _dbContext.Entry(dbService);
-        var changes = AuditHelper.GetChanges(entry);
+        
         
         await _publishEndpoint.Publish(new CompanyServiceUpdatedEvent
         {

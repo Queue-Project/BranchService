@@ -41,11 +41,11 @@ public class UpdateCompanyCommandHandler: IRequestHandler<UpdateCompanyCommand, 
         dbCompany.EmailAddress = request.EmailAddress;
         dbCompany.PhoneNumber = request.PhoneNumber;
         
+        var entry = _dbContext.Entry(dbCompany);
+        var changes = AuditHelper.GetChanges(entry);
         await _dbContext.SaveChangesAsync(cancellationToken);
         _logger.LogInformation("Company with Id {companyId} updated successfully", request.Id);
 
-        var entry = _dbContext.Entry(dbCompany);
-        var changes = AuditHelper.GetChanges(entry);
         
         await _publishEndpoint.Publish(new CompanyUpdatedEvent
         {

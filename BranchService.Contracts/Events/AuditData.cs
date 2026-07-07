@@ -1,4 +1,3 @@
-
 using QAuditLogService.Contracts;
 
 namespace BranchService.Contracts.Events;

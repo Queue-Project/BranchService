@@ -42,11 +42,12 @@ public class UpdateBranchCommandHandler: IRequestHandler<UpdateBranchCommand, Br
         branch.EmailAddress = request.EmailAddress;
         branch.PhoneNumber = request.PhoneNumber;
 
+        var entry = _dbContext.Entry(branch);
+        var changes = AuditHelper.GetChanges(entry);
         await _dbContext.SaveChangesAsync(cancellationToken);
         _logger.LogInformation("Branch with Id {branchId} updated successfully", request.Id);
 
-        var entry = _dbContext.Entry(branch);
-        var changes = AuditHelper.GetChanges(entry);
+        
         
         await _publishEndpoint.Publish(new BranchUpdatedEvent
         {
