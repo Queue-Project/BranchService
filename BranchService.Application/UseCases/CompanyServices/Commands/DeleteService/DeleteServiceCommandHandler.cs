@@ -1,6 +1,7 @@
 using System.Net;
 using BranchService.Application.Exceptions;
 using BranchService.Application.Interfaces.Data;
+using BranchService.Contracts.Events;
 using BranchService.Contracts.Events.CompanyServiceEvents;
 using BranchService.Domain.Models;
 using MassTransit;
@@ -44,7 +45,12 @@ public class DeleteServiceCommandHandler: IRequestHandler<DeleteServiceCommand, 
             CompanyServiceId = dbService.Id,
             CompanyId = dbService.CompanyId,
             ServiceDescription = dbService.ServiceDescription,
-            ServiceName = dbService.ServiceName
+            ServiceName = dbService.ServiceName,
+            AuditData = new AuditData
+            {
+                PerformedByUserId = 1,
+                PerformedByUserName = "systemAdmin"
+            }
         }, cancellationToken);
         
         return true;

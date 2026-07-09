@@ -1,5 +1,6 @@
 using BranchService.Application.Interfaces.Data;
 using BranchService.Application.Response;
+using BranchService.Contracts.Events;
 using BranchService.Contracts.Events.CompanyServiceEvents;
 using BranchService.Domain.Models;
 using MassTransit;
@@ -46,7 +47,12 @@ public class CreateServiceCommandHandler: IRequestHandler<CreateServiceCommand, 
             CompanyServiceId = service.Id,
             CompanyId = service.CompanyId,
             ServiceDescription = service.ServiceDescription,
-            ServiceName = service.ServiceName
+            ServiceName = service.ServiceName,
+            AuditData = new AuditData
+            {
+                PerformedByUserId = 1,
+                PerformedByUserName = "systemAdmin"
+            }
         }, cancellationToken);
         
         var response = new CompanyServiceResponseModel()

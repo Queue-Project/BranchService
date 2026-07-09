@@ -1,6 +1,7 @@
 using System.Net;
 using BranchService.Application.Exceptions;
 using BranchService.Application.Interfaces.Data;
+using BranchService.Contracts.Events;
 using BranchService.Contracts.Events.CompanyEvents;
 using BranchService.Domain.Models;
 using MassTransit;
@@ -38,13 +39,17 @@ public class DeleteCompanyCommandHandler: IRequestHandler<DeleteCompanyCommand, 
 
         await _publishEndpoint.Publish(new CompanyDeletedEvent
         {
-
             OccuredAt = DateTimeOffset.UtcNow,
             CompanyId = dbCompany.Id,
             CompanyName = dbCompany.CompanyName,
             Address = dbCompany.Address,
             EmailAddress = dbCompany.EmailAddress,
-            PhoneNumber = dbCompany.PhoneNumber
+            PhoneNumber = dbCompany.PhoneNumber,
+            AuditData = new AuditData
+            {
+                PerformedByUserId = 1,
+                PerformedByUserName = "systemAdmin"
+            }
         }, cancellationToken);
         
         _logger.LogInformation("Company with Id {companyId} deleted successfully", request.Id);

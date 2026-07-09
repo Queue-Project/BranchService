@@ -1,6 +1,7 @@
 using System.Net;
 using BranchService.Application.Exceptions;
 using BranchService.Application.Interfaces.Data;
+using BranchService.Contracts.Events;
 using BranchService.Contracts.Events.BranchEvents;
 using BranchService.Domain.Models;
 using MassTransit;
@@ -45,7 +46,12 @@ public class DeleteBranchCommandHandler: IRequestHandler<DeleteBranchCommand, bo
             Address = branch.Address,
             EmailAddress = branch.EmailAddress,
             PhoneNumber = branch.PhoneNumber,
-            IsActive = branch.IsActive
+            IsActive = branch.IsActive,
+            AuditData = new AuditData
+            {
+                PerformedByUserId = 1,
+                PerformedByUserName = "systemAdmin"
+            }
         }, cancellationToken);
 
         return true;

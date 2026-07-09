@@ -1,7 +1,9 @@
 using System.Net;
 using BranchService.Application.Exceptions;
+using BranchService.Application.Helpers;
 using BranchService.Application.Interfaces.Data;
 using BranchService.Application.Response;
+using BranchService.Contracts.Events;
 using BranchService.Contracts.Events.BranchEvents;
 using BranchService.Domain.Models;
 using MassTransit;
@@ -40,9 +42,13 @@ public class UpdateBranchCommandHandler: IRequestHandler<UpdateBranchCommand, Br
         branch.EmailAddress = request.EmailAddress;
         branch.PhoneNumber = request.PhoneNumber;
 
+        var entry = _dbContext.Entry(branch);
+        var changes = AuditHelper.GetChanges(entry);
         await _dbContext.SaveChangesAsync(cancellationToken);
         _logger.LogInformation("Branch with Id {branchId} updated successfully", request.Id);
 
+        
+        
         await _publishEndpoint.Publish(new BranchUpdatedEvent
         {
             OccuredAt = DateTimeOffset.UtcNow,
@@ -53,7 +59,13 @@ public class UpdateBranchCommandHandler: IRequestHandler<UpdateBranchCommand, Br
             Address = branch.Address,
             EmailAddress = branch.EmailAddress,
             PhoneNumber = branch.PhoneNumber,
-            IsActive = branch.IsActive
+            IsActive = branch.IsActive,
+            AuditData = new AuditData
+            {
+                PerformedByUserId = 1,
+                PerformedByUserName = "systemAdmin",
+                Changes = changes
+            }
         }, cancellationToken);
         
         var response = new BranchResponseModel

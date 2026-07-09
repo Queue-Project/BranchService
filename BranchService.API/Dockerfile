@@ -7,6 +7,11 @@ EXPOSE 5002
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+
+COPY ["LocalNuget/", "/src/LocalNuget/"]
+COPY ["nuget.config", "/src/"]
+
+
 COPY ["BranchService/BranchService.API/BranchService.API.csproj", "BranchService.API/"]
 COPY ["BranchService/BranchService.Application/BranchService.Application.csproj", "BranchService.Application/"]
 COPY ["BranchService/BranchService.Contracts/BranchService.Contracts.csproj", "BranchService.Contracts/"]

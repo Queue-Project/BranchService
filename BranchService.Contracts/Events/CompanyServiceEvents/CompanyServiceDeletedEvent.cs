@@ -7,4 +7,5 @@ public class CompanyServiceDeletedEvent
     public int CompanyServiceId { get; set; }
     public string ServiceName { get; set; }
     public string ServiceDescription { get; set; }
+    public AuditData? AuditData { get; set; }
 }

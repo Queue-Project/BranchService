@@ -2,6 +2,7 @@ using BranchService.Application.Interfaces.Data;
 using BranchService.Domain.Models;
 using BranchService.Infrastructure.Persistence.TableConfiguration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BranchService.Infrastructure.Persistence.DataBase;
 
@@ -21,4 +22,7 @@ public class BranchServiceDbContext : DbContext, IBranchServiceApplicationDbCont
     public DbSet<CompanyServiceEntity> CompanyServices { get; set; }
     public DbSet<BranchEntity> Branches { get; set; }
     public DbSet<BranchConfigurationEntity> BranchConfigurations { get; set; }
+    
+    public new EntityEntry Entry(object entity)
+        => base.Entry(entity);
 }

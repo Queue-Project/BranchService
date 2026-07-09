@@ -199,6 +199,11 @@ PublishScripts/
 *.nuget.props
 *.nuget.targets
 
+
+!BranchServiceLocalNuget/
+!BranchServiceLocalNuget/*.nupkg
+
+
 # Microsoft Azure Build Output
 csx/
 *.build.csdef
