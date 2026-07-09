@@ -63,9 +63,8 @@ public class CompanyControllerTest : IClassFixture<QBranchServiceWebApplicationF
     public async Task GetCompany_NonExistentCompany_ReturnsNotFound()
     {
         var nonExistentCompanyId = 999;
-        var url = $"/api/Company/{nonExistentCompanyId}";
-       
-        var exception = await Assert.ThrowsAsync<HttpStatusCodeException>(() => _client.GetAsync(url));
-        exception.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+        var response = await _client.GetAsync($"api/Company/{nonExistentCompanyId}");
+
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 }
