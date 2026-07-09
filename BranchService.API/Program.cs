@@ -3,7 +3,7 @@ using BranchService.Application;
 using BranchService.Application.Helpers;
 using BranchService.Application.Interfaces.Data;
 using BranchService.Application.Validators.CompanyValidators;
-using BranchService.Infrastructura.Persistence.DataBase;
+using BranchService.Infrastructure.Persistence.DataBase;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;

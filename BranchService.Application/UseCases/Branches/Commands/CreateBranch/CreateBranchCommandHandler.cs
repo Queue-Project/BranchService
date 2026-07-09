@@ -32,8 +32,8 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, B
         var company = await _dbContext.Companies.FirstOrDefaultAsync(s => s.Id == request.CompanyId, cancellationToken);
         if (company == null)
         {
-            _logger.LogError("Company with Id:{CompanyId} not found!", company.Id);
-            throw new HttpStatusCodeException(HttpStatusCode.NotFound, nameof(CompanyEntity));
+            _logger.LogError("Company with Id:{CompanyId} not found!", request.CompanyId);
+            throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Company not found");
         }
 
         var branch = new BranchEntity
