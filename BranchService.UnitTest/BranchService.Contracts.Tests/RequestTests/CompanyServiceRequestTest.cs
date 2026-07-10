@@ -13,6 +13,7 @@ public class CompanyServiceRequestTest
         {
             RequestId = Guid.NewGuid(),
             CompanyId = 1,
+            BranchId = 1,
             CompanyServiceId = 1,
             RequestedAt = DateTimeOffset.UtcNow
         };
@@ -22,6 +23,8 @@ public class CompanyServiceRequestTest
         
         deserializedRequest.RequestId.ShouldBe(originalRequest.RequestId);
         deserializedRequest.CompanyId.ShouldBe(originalRequest.CompanyId);
+        deserializedRequest.BranchId.ShouldBe(originalRequest.BranchId);
+        
         deserializedRequest.CompanyServiceId.ShouldBe(originalRequest.CompanyServiceId);
         deserializedRequest.RequestedAt.ShouldBe(originalRequest.RequestedAt);
     }

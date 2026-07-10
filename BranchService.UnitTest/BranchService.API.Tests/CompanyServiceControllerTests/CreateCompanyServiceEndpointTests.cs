@@ -29,16 +29,20 @@ public class CreateCompanyServiceEndpointTests
         var createCompanyServiceCommand = new CreateServiceCommand
         (
             1,
+            1,
             "Test Service Name",
-            "Test Service Description"
+            "Test Service Description",
+            45
         );
 
         var expectedResponse = new CompanyServiceResponseModel()
         {
             Id = 1,
             CompanyId = 1,
+            BranchId = 1,
             ServiceName = "Test Service Name",
-            ServiceDescription = "Test Service Description"
+            ServiceDescription = "Test Service Description",
+            ServiceDuration = 45,
         };
 
         _mockMediator
@@ -63,8 +67,10 @@ public class CreateCompanyServiceEndpointTests
         var createCompanyServiceCommand = new CreateServiceCommand
         (
             1,
+            1,
             "",
-            ""
+            "",
+            45
         );
 
         _mockMediator

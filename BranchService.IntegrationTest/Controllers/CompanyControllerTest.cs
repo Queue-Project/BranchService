@@ -27,7 +27,7 @@ public class CompanyControllerTest : IClassFixture<QBranchServiceWebApplicationF
             Address: "TestAddress",
             EmailAddress: "test@gmail.com",
             PhoneNumber: "+992921111112",
-            CompanyCategory.Beauty);
+            CompanyCategory: CompanyCategory.Beauty);
 
         var response = await _client.PostAsJsonAsync("/api/Company", createCompanyCommand);
 

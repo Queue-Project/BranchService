@@ -13,8 +13,10 @@ public class CompanyServiceResponseTest
         {
             RequestId = Guid.NewGuid(),
             CompanyId = 1,
+            BranchId = 1,
             CompanyServiceId = 1,
             CompanyServiceName = "Test Name",
+            ServiceDuration = 45,
             IsValid = true,
             ErrorMessage = null
         };
@@ -24,8 +26,10 @@ public class CompanyServiceResponseTest
         
         deserializedResponse.RequestId.ShouldBe(originalResponse.RequestId);
         deserializedResponse.CompanyId.ShouldBe(originalResponse.CompanyId);
+        deserializedResponse.BranchId.ShouldBe(originalResponse.BranchId);
         deserializedResponse.CompanyServiceId.ShouldBe(originalResponse.CompanyServiceId);
         deserializedResponse.CompanyServiceName.ShouldBe(originalResponse.CompanyServiceName);
+        deserializedResponse.ServiceDuration.ShouldBe(originalResponse.ServiceDuration);
         deserializedResponse.IsValid.ShouldBe(originalResponse.IsValid);
         deserializedResponse.ErrorMessage.ShouldBe(originalResponse.ErrorMessage);
     }

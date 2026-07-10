@@ -14,9 +14,10 @@ public class CompanyServiceTableConfiguration : IEntityTypeConfiguration<Company
         builder.HasOne(s => s.Company)
             .WithMany(s => s.CompanyServices)
             .HasForeignKey(s => s.CompanyId);
-
+        
         builder.HasOne(s => s.Branch)
             .WithMany(s => s.CompanyServices)
-            .HasForeignKey(s => s.CompanyId);
+            .HasForeignKey(s => s.BranchId);
+
     }
 }

@@ -10,23 +10,22 @@ using Xunit;
 
 namespace BranchService.IntegrationTest;
 
-public class QBranchServiceWebApplicationFactory: WebApplicationFactory<Program>, IAsyncLifetime
+public class QBranchServiceWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    
     private readonly PostgreSqlContainer _postgresContainer = new PostgreSqlBuilder("postgres:16-alpine")
         .WithDatabase("branch_test")
         .WithUsername("postgres")
         .WithPassword("postgres")
         .Build();
-    
+
     private readonly RabbitMqContainer _rabbitMqContainer = new RabbitMqBuilder()
         .WithImage("rabbitmq:3-management")
         .WithUsername("guest")
         .WithPassword("guest")
         .Build();
-    
+
     private string? _postgresConnectionString;
-    
+
 
     protected override IHost CreateHost(IHostBuilder builder)
     {
@@ -36,7 +35,7 @@ public class QBranchServiceWebApplicationFactory: WebApplicationFactory<Program>
             var settings = new Dictionary<string, string?>
             {
                 ["ConnectionStrings:DefaultConnection"] = _postgresConnectionString,
-                
+
                 ["RabbitMQ:Host"] = _rabbitMqContainer.Hostname,
                 ["RabbitMQ:Port"] = _rabbitMqContainer.GetMappedPublicPort(5672).ToString(),
                 ["RabbitMQ:Username"] = "guest",
@@ -45,18 +44,16 @@ public class QBranchServiceWebApplicationFactory: WebApplicationFactory<Program>
 
             config.AddInMemoryCollection(settings);
         });
-        
+
         var host = base.CreateHost(builder);
-        
+
         using (var scope = host.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<BranchServiceDbContext>(); 
+            var db = scope.ServiceProvider.GetRequiredService<BranchServiceDbContext>();
             db.Database.Migrate();
         }
-        
+
         return host;
-
-
     }
 
     public async Task InitializeAsync()
@@ -65,9 +62,8 @@ public class QBranchServiceWebApplicationFactory: WebApplicationFactory<Program>
             _postgresContainer.StartAsync(),
             _rabbitMqContainer.StartAsync()
         );
-        
-        _postgresConnectionString = _postgresContainer.GetConnectionString();
 
+        _postgresConnectionString = _postgresContainer.GetConnectionString();
     }
 
     public async Task DisposeAsync()
@@ -76,8 +72,5 @@ public class QBranchServiceWebApplicationFactory: WebApplicationFactory<Program>
             _postgresContainer.DisposeAsync().AsTask(),
             _rabbitMqContainer.DisposeAsync().AsTask()
         );
-
     }
-    
-    
 }

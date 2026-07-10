@@ -44,8 +44,10 @@ public class DeleteServiceCommandHandler: IRequestHandler<DeleteServiceCommand, 
             OccuredAt = DateTimeOffset.UtcNow,
             CompanyServiceId = dbService.Id,
             CompanyId = dbService.CompanyId,
+            BranchId = dbService.BranchId,
             ServiceDescription = dbService.ServiceDescription,
             ServiceName = dbService.ServiceName,
+            ServiceDuration = dbService.ServiceDuration,
             AuditData = new AuditData
             {
                 PerformedByUserId = 1,

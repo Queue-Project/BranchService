@@ -5,7 +5,7 @@ public class CompanyServiceEntity
     public int Id { get; set; }
     public string ServiceName { get; set; } = string.Empty;
     public string ServiceDescription { get; set; } = string.Empty;
-    public DateTime ServiceDuration { get; set; }
+    public int ServiceDuration { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
 
     public int CompanyId { get; set; }

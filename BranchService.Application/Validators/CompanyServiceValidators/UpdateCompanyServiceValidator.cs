@@ -7,9 +7,9 @@ public class UpdateCompanyServiceValidator: AbstractValidator<UpdateCompanyServi
 {
     public UpdateCompanyServiceValidator()
     {
-        RuleFor(s => s.CompanyId)
-            .NotEmpty().WithMessage("CompanyId is required.")
-            .GreaterThan(0).WithMessage("CompanyId ,ust be greater than 0.");
+        RuleFor(s => s.ServiceDuration)
+            .NotEmpty().WithMessage("ServiceDuration is required.")
+            .GreaterThanOrEqualTo(15).WithMessage("Duration time ,must be greater than or equal to 15 .");
         
         RuleFor(s => s.ServiceName)
             .NotEmpty().WithMessage("Service name is required.")

@@ -35,8 +35,10 @@ public class GetAllServicesQueryHandler: IRequestHandler<GetAllServicesQuery, Pa
         {
             Id = service.Id,
             CompanyId = service.CompanyId,
+            BranchId = service.BranchId,
             ServiceDescription = service.ServiceDescription,
-            ServiceName = service.ServiceName
+            ServiceName = service.ServiceName,
+            ServiceDuration = service.ServiceDuration,
         }).ToList();
         
         _logger.LogInformation("Fetched {serviceCount} services.", response.Count);

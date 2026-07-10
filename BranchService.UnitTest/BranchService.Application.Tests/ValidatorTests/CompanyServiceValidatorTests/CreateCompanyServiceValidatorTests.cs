@@ -18,8 +18,10 @@ public class CreateCompanyServiceValidatorTests
     {
         var command = new CreateServiceCommand(
             1,
+            1,
             "Test Name",
-            "Test Service Description");
+            "Test Service Description",
+            45);
 
         var result = _validator.TestValidate(command);
         result.ShouldNotHaveAnyValidationErrors();
@@ -31,8 +33,10 @@ public class CreateCompanyServiceValidatorTests
     {
         var command = new CreateServiceCommand(
             1,
+            1,
             "",
-            "Test Service Description");
+            "Test Service Description",
+            45);
 
         var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.ServiceName)
@@ -44,8 +48,10 @@ public class CreateCompanyServiceValidatorTests
     {
         var command = new CreateServiceCommand(
             1,
+            1,
             "Test Name",
-            "");
+            "",
+            45);
 
         var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(s => s.ServiceDescription)
@@ -58,11 +64,44 @@ public class CreateCompanyServiceValidatorTests
     {
         var command = new CreateServiceCommand(
             invalidCompanyId,
+            1,
             "Test Name",
-            "");
+            "",
+            45);
 
         var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(s => s.CompanyId)
             .WithErrorMessage("CompanyId is required.");
+    }
+    
+    [Theory]
+    [InlineData(0)]
+    public void Validator_WhenBranchIdIsInvalid_ShouldHaveValidationError(int invalidBranchId)
+    {
+        var command = new CreateServiceCommand(
+            1,
+            invalidBranchId,
+            "Test Name",
+            "",
+            45);
+
+        var result = _validator.TestValidate(command);
+        result.ShouldHaveValidationErrorFor(s => s.BranchId)
+            .WithErrorMessage("BranchId is required.");
+    }
+    
+    [Fact]
+    public async Task Validator_WhenServiceDurationIsSmallerThan15_ShouldHaveValidationError()
+    {
+        var command = new CreateServiceCommand(
+            1,
+            1,
+            "Test Name",
+            "",
+            10);
+
+        var result = _validator.TestValidate(command);
+        result.ShouldHaveValidationErrorFor(s => s.ServiceDuration)
+            .WithErrorMessage("Duration time ,must be greater than or equal to 15 .");
     }
 }

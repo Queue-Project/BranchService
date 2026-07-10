@@ -3,4 +3,4 @@ using MediatR;
 
 namespace BranchService.Application.UseCases.CompanyServices.Commands.CreateService;
 
-public record CreateServiceCommand(int CompanyId, string ServiceName, string ServiceDescription): IRequest<CompanyServiceResponseModel>;
+public record CreateServiceCommand(int CompanyId, int BranchId, string ServiceName, string ServiceDescription, int ServiceDuration): IRequest<CompanyServiceResponseModel>;

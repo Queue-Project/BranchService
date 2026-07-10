@@ -158,14 +158,16 @@ namespace BranchService.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("ServiceDuration")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("ServiceDuration")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ServiceName")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
 
                     b.HasIndex("CompanyId");
 
@@ -198,7 +200,7 @@ namespace BranchService.Infrastructure.Migrations
                 {
                     b.HasOne("BranchService.Domain.Models.BranchEntity", "Branch")
                         .WithMany("CompanyServices")
-                        .HasForeignKey("CompanyId")
+                        .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

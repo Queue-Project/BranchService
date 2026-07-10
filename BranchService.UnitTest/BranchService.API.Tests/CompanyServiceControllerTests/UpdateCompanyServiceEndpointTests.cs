@@ -33,9 +33,9 @@ public class UpdateCompanyServiceEndpointTests
         int id = 1;
         var updateRequest = new UpdateCompanyServiceRequest
         {
-            CompanyId = 1,
             ServiceName = "Update Company Service Name",
-            ServiceDescription = "Update Company Service Description"
+            ServiceDescription = "Update Company Service Description",
+            ServiceDuration = 45,
         };
 
 
@@ -48,9 +48,9 @@ public class UpdateCompanyServiceEndpointTests
         };
 
         var updateCommand = new UpdateServiceCommand(id,
-            updateRequest.CompanyId,
             updateRequest.ServiceName,
-            updateRequest.ServiceDescription);
+            updateRequest.ServiceDescription,
+            updateRequest.ServiceDuration);
 
         _mockMediator.Setup(s => s.Send(updateCommand, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResponse);
@@ -76,16 +76,16 @@ public class UpdateCompanyServiceEndpointTests
         int id = 1;
         var updateRequest = new UpdateCompanyServiceRequest
         {
-            CompanyId = 1,
             ServiceName = "Update Company Service Name",
-            ServiceDescription = "Update Company Service Description"
+            ServiceDescription = "Update Company Service Description",
+            ServiceDuration = 45
         };
         
 
         var updateCommand = new UpdateServiceCommand(id,
-            updateRequest.CompanyId,
             updateRequest.ServiceName,
-            updateRequest.ServiceDescription);
+            updateRequest.ServiceDescription,
+            updateRequest.ServiceDuration);
 
 
         _mockMediator
@@ -107,16 +107,16 @@ public class UpdateCompanyServiceEndpointTests
         int id = 999;
         var updateRequest = new UpdateCompanyServiceRequest
         {
-            CompanyId = 1,
             ServiceName = "Update Company Service Name",
-            ServiceDescription = "Update Company Service Description"
+            ServiceDescription = "Update Company Service Description",
+            ServiceDuration = 45
         };
         
 
         var updateCommand = new UpdateServiceCommand(id,
-            updateRequest.CompanyId,
             updateRequest.ServiceName,
-            updateRequest.ServiceDescription);
+            updateRequest.ServiceDescription,
+            updateRequest.ServiceDuration);
 
         var expectedException = new HttpStatusCodeException(HttpStatusCode.NotFound, "CompanyService not found");
 

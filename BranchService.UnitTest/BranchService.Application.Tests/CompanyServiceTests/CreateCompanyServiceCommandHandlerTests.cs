@@ -1,12 +1,9 @@
-using BranchService.Application.UseCases.Companies.Commands.CreateCompany;
 using BranchService.Application.UseCases.CompanyServices.Commands.CreateService;
-using BranchService.Contracts.Events.CompanyEvents;
 using BranchService.Contracts.Events.CompanyServiceEvents;
 using BranchService.Infrastructure.Persistence.DataBase;
 using BranchService.UnitTest.BranchService.Application.Tests.Infrastructure;
 using FluentAssertions;
 using MassTransit;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -35,8 +32,10 @@ public class CreateCompanyServiceCommandHandlerTests
         
         var command = new CreateServiceCommand(
             1,
+            1,
             "Test CompanyService Name",
-            "Test CompanyService Description");
+            "Test CompanyService Description",
+            45);
 
         // Act
 
@@ -64,8 +63,10 @@ public class CreateCompanyServiceCommandHandlerTests
 
         var command = new CreateServiceCommand(
             1,
+            1,
             "Test CompanyService Name",
-            "Test CompanyService Description");
+            "Test CompanyService Description",
+            45);
 
         // Act
 

@@ -30,8 +30,10 @@ public class CreateServiceCommandHandler: IRequestHandler<CreateServiceCommand, 
         var service = new CompanyServiceEntity
         {
             CompanyId = request.CompanyId,
+            BranchId = request.BranchId,
             ServiceName = request.ServiceName,
             ServiceDescription = request.ServiceDescription,
+            ServiceDuration = request.ServiceDuration,
             CreatedAt = DateTimeOffset.UtcNow
         };
 
@@ -46,8 +48,10 @@ public class CreateServiceCommandHandler: IRequestHandler<CreateServiceCommand, 
             OccuredAt = DateTimeOffset.UtcNow,
             CompanyServiceId = service.Id,
             CompanyId = service.CompanyId,
+            BranchId = service.BranchId,
             ServiceDescription = service.ServiceDescription,
             ServiceName = service.ServiceName,
+            ServiceDuration = service.ServiceDuration,
             AuditData = new AuditData
             {
                 PerformedByUserId = 1,
@@ -59,8 +63,10 @@ public class CreateServiceCommandHandler: IRequestHandler<CreateServiceCommand, 
         {
             Id = service.Id,
             CompanyId = service.CompanyId,
+            BranchId = service.BranchId,
             ServiceName = service.ServiceName,
-            ServiceDescription = service.ServiceDescription
+            ServiceDescription = service.ServiceDescription,
+            ServiceDuration = service.ServiceDuration
         };
 
         return response;

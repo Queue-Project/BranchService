@@ -106,6 +106,8 @@ public class BranchService : ServiceBase<IBranchService>, IBranchService
                 RequestId = Guid.NewGuid(),
                 CompanyId = request.CompanyId,
                 CompanyServiceId = request.CompanyServiceId,
+                BranchId = request.BranchId,
+                ServiceDuration = 0,
                 IsValid = false,
                 ErrorMessage = "CompanyService not found",
                 CompanyServiceName = null
@@ -117,141 +119,145 @@ public class BranchService : ServiceBase<IBranchService>, IBranchService
             RequestId = Guid.NewGuid(),
             CompanyId = request.CompanyId,
             CompanyServiceId = request.CompanyServiceId,
+            BranchId = request.BranchId,
+            ServiceDuration = companyService.ServiceDuration,
             IsValid = true,
             ErrorMessage = null,
             CompanyServiceName = companyService.ServiceName
         };
     }
 
-public async UnaryResult<QueueCreationValidationResponse> ValidateQueueCreationAsync(
-    QueueCreationValidationRequest request)
-{
-    _logger.LogInformation("Validating queue creation for Branch {BranchId} at {StartTime}", 
-        request.BranchId, request.RequestedStartTime);
-
-    var requestTime = TimeOnly.FromDateTime(request.RequestedStartTime.DateTime);
-
-    
-    var branchConfig = await _dbContext.BranchConfigurations
-        .FirstOrDefaultAsync(bc => bc.BranchId == request.BranchId);
-
-   
-    if (branchConfig == null)
+    public async UnaryResult<QueueCreationValidationResponse> ValidateQueueCreationAsync(
+        QueueCreationValidationRequest request)
     {
-        return new QueueCreationValidationResponse
+        _logger.LogInformation("Validating queue creation for Branch {BranchId} at {StartTime}",
+            request.BranchId, request.RequestedStartTime);
+
+        var requestTime = TimeOnly.FromDateTime(request.RequestedStartTime.DateTime);
+
+
+        var branchConfig = await _dbContext.BranchConfigurations
+            .FirstOrDefaultAsync(bc => bc.BranchId == request.BranchId);
+
+
+        if (branchConfig == null)
+        {
+            return new QueueCreationValidationResponse
+            {
+                RequestId = request.RequestId,
+                IsValid = false,
+                ErrorMessage = "Branch configuration not found"
+            };
+        }
+
+
+        var isWithinWorkingHours = requestTime >= branchConfig.OpenTime &&
+                                   requestTime <= branchConfig.CloseTime;
+
+        string? workingHoursMessage = null;
+        if (!isWithinWorkingHours)
+        {
+            workingHoursMessage = $"Branch hours: {branchConfig.OpenTime:HH:mm} - {branchConfig.CloseTime:HH:mm}";
+        }
+
+
+        var isWithinBreakTime = false;
+        string? breakTimeMessage = null;
+
+        if (branchConfig.BreakStartTime.HasValue && branchConfig.BreakEndTime.HasValue)
+        {
+            isWithinBreakTime = requestTime >= branchConfig.BreakStartTime &&
+                                requestTime <= branchConfig.BreakEndTime;
+
+            if (isWithinBreakTime)
+            {
+                breakTimeMessage =
+                    $"Branch on break: {branchConfig.BreakStartTime:HH:mm} - {branchConfig.BreakEndTime:HH:mm}";
+            }
+        }
+
+
+        var isValid = isWithinWorkingHours && !isWithinBreakTime;
+
+        var response = new QueueCreationValidationResponse
         {
             RequestId = request.RequestId,
-            IsValid = false,
-            ErrorMessage = "Branch configuration not found"
+            IsValid = isValid,
+
+
+            IsWithinWorkingHours = isWithinWorkingHours,
+            WorkingHoursMessage = workingHoursMessage,
+
+
+            IsWithinBreakTime = isWithinBreakTime,
+            BreakTimeMessage = breakTimeMessage,
+
+
+            MaxTicketsPerDay = branchConfig.MaxTicketsPerDay
         };
-    }
 
-    
-    var isWithinWorkingHours = requestTime >= branchConfig.OpenTime && 
-                               requestTime <= branchConfig.CloseTime;
-    
-    string? workingHoursMessage = null;
-    if (!isWithinWorkingHours)
-    {
-        workingHoursMessage = $"Branch hours: {branchConfig.OpenTime:HH:mm} - {branchConfig.CloseTime:HH:mm}";
-    }
 
-    
-    var isWithinBreakTime = false;
-    string? breakTimeMessage = null;
-    
-    if (branchConfig.BreakStartTime.HasValue && branchConfig.BreakEndTime.HasValue)
-    {
-        isWithinBreakTime = requestTime >= branchConfig.BreakStartTime && 
-                            requestTime <= branchConfig.BreakEndTime;
-        
-        if (isWithinBreakTime)
+        if (!isValid)
         {
-            breakTimeMessage = $"Branch on break: {branchConfig.BreakStartTime:HH:mm} - {branchConfig.BreakEndTime:HH:mm}";
+            var errors = new List<string>();
+            if (!isWithinWorkingHours) errors.Add(workingHoursMessage);
+            if (isWithinBreakTime) errors.Add(breakTimeMessage);
+
+            response.ErrorMessage = string.Join("; ", errors);
         }
+
+        return response;
     }
 
-    
-    var isValid = isWithinWorkingHours && !isWithinBreakTime;
-
-    var response = new QueueCreationValidationResponse
+    public async UnaryResult<List<BranchResponse>> GetCompanyBranches(int companyId)
     {
-        RequestId = request.RequestId,
-        IsValid = isValid,
-        
-        
-        IsWithinWorkingHours = isWithinWorkingHours,
-        WorkingHoursMessage = workingHoursMessage,
-        
-        
-        IsWithinBreakTime = isWithinBreakTime,
-        BreakTimeMessage = breakTimeMessage,
-        
-        
-        MaxTicketsPerDay = branchConfig.MaxTicketsPerDay
-    };
+        var branches = await _dbContext.Branches
+            .Where(s => s.CompanyId == companyId)
+            .ToListAsync();
 
-    
-    if (!isValid)
-    {
-        var errors = new List<string>();
-        if (!isWithinWorkingHours) errors.Add(workingHoursMessage);
-        if (isWithinBreakTime) errors.Add(breakTimeMessage);
-        
-        response.ErrorMessage = string.Join("; ", errors);
+        if (!branches.Any())
+        {
+            _logger.LogWarning("Not found any branch for company Id: {companyId}", companyId);
+            return [];
+        }
+
+        var response = branches.Select(s => new BranchResponse
+        {
+            RequestId = Guid.NewGuid(),
+            BranchId = s.Id,
+            BranchName = s.BranchName,
+            CompanyId = s.CompanyId,
+            IsValid = true,
+            ErrorMessage = null
+        }).ToList();
+
+        return response;
     }
 
-    return response;
-}
-
-public async UnaryResult<List<BranchResponse>> GetCompanyBranches(int companyId)
-{
-    var branches = await _dbContext.Branches
-        .Where(s => s.CompanyId == companyId)
-        .ToListAsync();
-
-    if (!branches.Any())
+    public async UnaryResult<List<CompanyServiceResponse>> GetCompanyServices(int companyId)
     {
-        _logger.LogWarning("Not found any branch for company Id: {companyId}", companyId);
-        return [];
+        var companyServices = await _dbContext.CompanyServices
+            .Where(s => s.CompanyId == companyId)
+            .ToListAsync();
+
+        if (!companyServices.Any())
+        {
+            _logger.LogWarning("Not found any  service for company Id: {companyId}", companyId);
+            return [];
+        }
+
+        var response = companyServices.Select(s => new CompanyServiceResponse
+        {
+            RequestId = Guid.NewGuid(),
+            CompanyId = s.CompanyId,
+            BranchId = s.BranchId,
+            CompanyServiceId = s.Id,
+            CompanyServiceName = s.ServiceName,
+            ServiceDuration = s.ServiceDuration,
+            IsValid = true,
+            ErrorMessage = null
+        }).ToList();
+
+        return response;
     }
-
-    var response = branches.Select(s => new BranchResponse
-    {
-        RequestId = Guid.NewGuid(),
-        BranchId = s.Id,
-        BranchName = s.BranchName,
-        CompanyId = s.CompanyId,
-        IsValid = true,
-        ErrorMessage = null
-
-    }).ToList();
-
-    return response;
-}
-
-public async UnaryResult<List<CompanyServiceResponse>> GetCompanyServices(int companyId)
-{
-    var companyServices = await _dbContext.CompanyServices
-        .Where(s => s.CompanyId == companyId)
-        .ToListAsync();
-
-    if (!companyServices.Any())
-    {
-        _logger.LogWarning("Not found any  service for company Id: {companyId}", companyId);
-        return [];
-    }
-
-    var response = companyServices.Select(s => new CompanyServiceResponse
-    {
-        RequestId = Guid.NewGuid(),
-        CompanyId = s.CompanyId,
-        CompanyServiceId = s.Id,
-        CompanyServiceName = s.ServiceName,
-        IsValid = true,
-        ErrorMessage = null
-    }).ToList();
-
-    return response;
-}
 }
