@@ -2,6 +2,7 @@ using BranchService.Application.Interfaces.Data;
 using BranchService.Application.Response;
 using BranchService.Contracts.Events;
 using BranchService.Contracts.Events.CompanyEvents;
+using BranchService.Contracts.Events.Enums;
 using BranchService.Domain.Models;
 using MassTransit;
 using MediatR;
@@ -34,6 +35,7 @@ public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand,
             Address = request.Address,
             EmailAddress = request.EmailAddress,
             PhoneNumber = request.PhoneNumber,
+            CompanyCategory = request.CompanyCategory,
             CreatedAt = DateTimeOffset.UtcNow
         };
 
@@ -51,6 +53,7 @@ public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand,
             Address = company.Address,
             EmailAddress = company.EmailAddress,
             PhoneNumber = company.PhoneNumber,
+            CompanyCategory = (CompanyCategory)company.CompanyCategory,
             AuditData = new AuditData
             {
                 PerformedByUserId = 1,
@@ -65,6 +68,7 @@ public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand,
             Address = company.Address,
             EmailAddress = company.EmailAddress,
             PhoneNumber = company.PhoneNumber,
+            CompanyCategory = company.CompanyCategory,
             CreatedAt = company.CreatedAt
         };
 

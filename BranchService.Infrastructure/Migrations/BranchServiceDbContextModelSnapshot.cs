@@ -114,6 +114,9 @@ namespace BranchService.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("CompanyCategory")
+                        .HasColumnType("integer");
+
                     b.Property<string>("CompanyName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -142,6 +145,9 @@ namespace BranchService.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BranchId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("CompanyId")
                         .HasColumnType("integer");
 
@@ -151,6 +157,9 @@ namespace BranchService.Infrastructure.Migrations
                     b.Property<string>("ServiceDescription")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("ServiceDuration")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ServiceName")
                         .IsRequired()
@@ -187,13 +196,26 @@ namespace BranchService.Infrastructure.Migrations
 
             modelBuilder.Entity("BranchService.Domain.Models.CompanyServiceEntity", b =>
                 {
+                    b.HasOne("BranchService.Domain.Models.BranchEntity", "Branch")
+                        .WithMany("CompanyServices")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BranchService.Domain.Models.CompanyEntity", "Company")
                         .WithMany("CompanyServices")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Branch");
+
                     b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("BranchService.Domain.Models.BranchEntity", b =>
+                {
+                    b.Navigation("CompanyServices");
                 });
 
             modelBuilder.Entity("BranchService.Domain.Models.CompanyEntity", b =>

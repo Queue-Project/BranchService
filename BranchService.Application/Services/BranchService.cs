@@ -6,6 +6,7 @@ using MagicOnion;
 using MagicOnion.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using CompanyCategory = BranchService.Contracts.Events.Enums.CompanyCategory;
 
 namespace BranchService.Application.Services;
 
@@ -70,6 +71,7 @@ public class BranchService : ServiceBase<IBranchService>, IBranchService
             {
                 RequestId = request.RequestId,
                 CompanyId = request.CompanyId,
+                CompanyCategory = null,
                 IsValid = false,
                 CompanyName = null,
                 ErrorMessage = "Company not found"
@@ -80,6 +82,7 @@ public class BranchService : ServiceBase<IBranchService>, IBranchService
         {
             RequestId = request.RequestId,
             CompanyId = request.CompanyId,
+            CompanyCategory = (CompanyCategory)company.CompanyCategory,
             IsValid = true,
             CompanyName = company.CompanyName,
             ErrorMessage = null

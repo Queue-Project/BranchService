@@ -5,6 +5,7 @@ using BranchService.Application.Requests;
 using BranchService.Application.Response;
 using BranchService.Application.UseCases.Companies.Commands.UpdateCompany;
 using BranchService.Application.UseCases.Companies.Queries.GetCompanyById;
+using BranchService.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -36,7 +37,9 @@ public class UpdateCompanyEndpointTests
             CompanyName = "Update Company Name",
             Address = "Update Address",
             EmailAddress = "update@test.com",
-            PhoneNumber = "+992923224252"
+            PhoneNumber = "+992923224252",
+            CompanyCategory = CompanyCategory.Beauty
+            
         };
 
 
@@ -53,7 +56,8 @@ public class UpdateCompanyEndpointTests
             updateRequest.CompanyName,
             updateRequest.Address,
             updateRequest.EmailAddress,
-            updateRequest.PhoneNumber);
+            updateRequest.PhoneNumber,
+            updateRequest.CompanyCategory);
 
         _mockMediator.Setup(s => s.Send(updateCommand, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResponse);
@@ -82,14 +86,17 @@ public class UpdateCompanyEndpointTests
             CompanyName = "",
             Address = "Update Address",
             EmailAddress = "updateTest.com",
-            PhoneNumber = "A11"
+            PhoneNumber = "A11",
+            CompanyCategory = CompanyCategory.Beauty
+            
         };
 
         var updateCommand = new UpdateCompanyCommand(id,
             updateRequest.CompanyName,
             updateRequest.Address,
             updateRequest.EmailAddress,
-            updateRequest.PhoneNumber);
+            updateRequest.PhoneNumber,
+            updateRequest.CompanyCategory);
 
         _mockMediator
             .Setup(m => m.Send(updateCommand, It.IsAny<CancellationToken>()))
@@ -113,14 +120,16 @@ public class UpdateCompanyEndpointTests
             CompanyName = "",
             Address = "Update Address",
             EmailAddress = "updateTest.com",
-            PhoneNumber = "A11"
+            PhoneNumber = "A11",
+            CompanyCategory = CompanyCategory.Beauty
         };
 
         var updateCommand = new UpdateCompanyCommand(id,
             updateRequest.CompanyName,
             updateRequest.Address,
             updateRequest.EmailAddress,
-            updateRequest.PhoneNumber);
+            updateRequest.PhoneNumber,
+            updateRequest.CompanyCategory);
         
         var expectedException = new HttpStatusCodeException(HttpStatusCode.NotFound, "Company not found");
     

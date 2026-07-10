@@ -1,5 +1,6 @@
 using BranchService.Application.UseCases.Companies.Commands.CreateCompany;
 using BranchService.Application.Validators.CompanyValidators;
+using BranchService.Domain.Enums;
 using FluentValidation.TestHelper;
 
 namespace BranchService.UnitTest.BranchService.Application.Tests.ValidatorTests.CompanyValidatorTests;
@@ -20,7 +21,8 @@ public class CreateCompanyValidatorTests
             "Test Name",
             "Test Address",
             "test@company.com",
-            "+992923324252");
+            "+992923324252",
+            CompanyCategory.Beauty);
 
         var result = _validator.TestValidate(command);
         result.ShouldNotHaveAnyValidationErrors();
@@ -34,7 +36,8 @@ public class CreateCompanyValidatorTests
             "",
             "Test Address",
             "test@company.com",
-            "+992923324252");
+            "+992923324252",
+            CompanyCategory.Beauty);
 
         var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.CompanyName)
@@ -48,7 +51,8 @@ public class CreateCompanyValidatorTests
             "Test Name",
             "",
             "test@company.com",
-            "+992923324252");
+            "+992923324252",
+            CompanyCategory.Beauty);
 
         var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(s => s.Address)
@@ -62,7 +66,8 @@ public class CreateCompanyValidatorTests
             "Test Name",
             "Test Address",
             "testCompany.com",
-            "+992923324252");
+            "+992923324252",
+            CompanyCategory.Beauty);
 
         var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(s => s.EmailAddress)
@@ -76,7 +81,8 @@ public class CreateCompanyValidatorTests
             "Test Name",
             "Test Address",
             "test@company.com",
-            "A92923324252");
+            "A92923324252",
+            CompanyCategory.Beauty);
 
         var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(s => s.PhoneNumber)

@@ -3,6 +3,7 @@ using BranchService.API.Controllers;
 using BranchService.Application.Exceptions;
 using BranchService.Application.Response;
 using BranchService.Application.UseCases.Companies.Queries.GetCompanyInfoById;
+using BranchService.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -37,6 +38,7 @@ public class GetCompanyInfoByIdEndpointTest
             Address = "Test Street",
             EmailAddress = "test@company.com",
             PhoneNumber = "992923324252",
+            CompanyCategory = CompanyCategory.Beauty,
             TotalBranches = 0,
             TotalServices = 0,
             Branches = [],

@@ -1,3 +1,5 @@
+using BranchService.Domain.Enums;
+
 namespace BranchService.Application.Response;
 
 public class CompanyByIdResponseModel
@@ -7,6 +9,7 @@ public class CompanyByIdResponseModel
     public string Address { get; set; }
     public string PhoneNumber { get; set; }
     public string EmailAddress { get; set; }
+    public CompanyCategory CompanyCategory { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public int TotalBranches { get; set; }
     public int TotalServices { get; set; }
