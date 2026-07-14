@@ -5,6 +5,7 @@ using BranchService.Application.Interfaces.Data;
 using BranchService.Application.Response;
 using BranchService.Contracts.Events;
 using BranchService.Contracts.Events.BranchEvents;
+using BranchService.Contracts.Events.Enums;
 using BranchService.Domain.Models;
 using MassTransit;
 using MediatR;
@@ -35,6 +36,9 @@ public class UpdateBranchCommandHandler: IRequestHandler<UpdateBranchCommand, Br
             _logger.LogInformation("Branch with Id {branchId} not found for updating", request.Id);
             throw new HttpStatusCodeException(HttpStatusCode.NotFound, nameof(BranchEntity));
         }
+        
+        var dbCompany = await _dbContext.Companies.FirstOrDefaultAsync(s => s.Id == branch.CompanyId, cancellationToken);
+        
 
         branch.BranchName = request.BranchName;
         branch.City = request.City;
@@ -54,6 +58,7 @@ public class UpdateBranchCommandHandler: IRequestHandler<UpdateBranchCommand, Br
             OccuredAt = DateTimeOffset.UtcNow,
             BranchId = branch.Id,
             CompanyId = branch.CompanyId,
+            CompanyCategory = (CompanyCategory) dbCompany!.CompanyCategory,
             BranchName = branch.BranchName,
             City = branch.City,
             Address = branch.Address,

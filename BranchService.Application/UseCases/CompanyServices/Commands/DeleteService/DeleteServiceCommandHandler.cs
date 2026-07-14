@@ -3,6 +3,7 @@ using BranchService.Application.Exceptions;
 using BranchService.Application.Interfaces.Data;
 using BranchService.Contracts.Events;
 using BranchService.Contracts.Events.CompanyServiceEvents;
+using BranchService.Contracts.Events.Enums;
 using BranchService.Domain.Models;
 using MassTransit;
 using MediatR;
@@ -34,6 +35,8 @@ public class DeleteServiceCommandHandler: IRequestHandler<DeleteServiceCommand, 
             throw new HttpStatusCodeException(HttpStatusCode.NotFound, nameof(CompanyServiceEntity));
         }
 
+        var dbCompany = await _dbContext.Companies.FirstOrDefaultAsync(s => s.Id == dbService.CompanyId, cancellationToken);
+        
         _dbContext.CompanyServices.Remove(dbService);
         await _dbContext.SaveChangesAsync(cancellationToken);
         
@@ -43,6 +46,7 @@ public class DeleteServiceCommandHandler: IRequestHandler<DeleteServiceCommand, 
         {
             OccuredAt = DateTimeOffset.UtcNow,
             CompanyServiceId = dbService.Id,
+            CompanyCategory = (CompanyCategory)dbCompany!.CompanyCategory,
             CompanyId = dbService.CompanyId,
             BranchId = dbService.BranchId,
             ServiceDescription = dbService.ServiceDescription,

@@ -31,8 +31,10 @@ public class DeleteBranchCommandHandlerTests
     {
         
         //Arrange
+        var company = TestDataSeeder.CreateCompany();
         var branch = TestDataSeeder.CreateBranch();
-
+        
+        await _dbContext.Companies.AddAsync(company, CancellationToken.None);
         await _dbContext.Branches.AddAsync(branch, CancellationToken.None);
         await _dbContext.SaveChangesAsync(CancellationToken.None);
 

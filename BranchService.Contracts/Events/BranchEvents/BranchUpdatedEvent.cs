@@ -1,9 +1,13 @@
+using BranchService.Contracts.Events.Enums;
+
 namespace BranchService.Contracts.Events.BranchEvents;
 
 public class BranchUpdatedEvent
 {
     public DateTimeOffset OccuredAt { get; set; }
     public int CompanyId { get; set; }
+    public CompanyCategory CompanyCategory { get; set; }
+    
     public int BranchId { get; set; }
     public string BranchName { get; set; }
     public string City { get; set; }

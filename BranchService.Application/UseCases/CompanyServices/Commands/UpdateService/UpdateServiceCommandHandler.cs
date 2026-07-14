@@ -5,6 +5,7 @@ using BranchService.Application.Interfaces.Data;
 using BranchService.Application.Response;
 using BranchService.Contracts.Events;
 using BranchService.Contracts.Events.CompanyServiceEvents;
+using BranchService.Contracts.Events.Enums;
 using BranchService.Domain.Models;
 using MassTransit;
 using MediatR;
@@ -38,6 +39,7 @@ public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand,
             throw new HttpStatusCodeException(HttpStatusCode.NotFound, nameof(CompanyServiceEntity));
         }
 
+        var dbCompany = await _dbContext.Companies.FirstOrDefaultAsync(s => s.Id == dbService.CompanyId, cancellationToken);
 
         dbService.ServiceName = request.ServiceName;
         dbService.ServiceDescription = request.ServiceDescription;
@@ -57,6 +59,7 @@ public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand,
             OccuredAt = DateTimeOffset.UtcNow,
             CompanyServiceId = dbService.Id,
             CompanyId = dbService.CompanyId,
+            CompanyCategory =(CompanyCategory)dbCompany!.CompanyCategory,
             BranchId = dbService.BranchId,
             ServiceDescription = dbService.ServiceDescription,
             ServiceName = dbService.ServiceName,

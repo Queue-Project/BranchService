@@ -1,3 +1,5 @@
+using System.Net;
+using BranchService.Application.Exceptions;
 using BranchService.Application.UseCases.CompanyServices.Commands.CreateService;
 using BranchService.Contracts.Events.CompanyServiceEvents;
 using BranchService.Infrastructure.Persistence.DataBase;
@@ -6,6 +8,7 @@ using FluentAssertions;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Shouldly;
 
 namespace BranchService.UnitTest.BranchService.Application.Tests.CompanyServiceTests;
 
@@ -29,6 +32,12 @@ public class CreateCompanyServiceCommandHandlerTests
     public async Task Handle_Should_Create_CompanyService()
     {
         // Arrange
+
+        var company = TestDataSeeder.CreateCompany();
+        var branch = TestDataSeeder.CreateBranch();
+        await _dbContext.Companies.AddAsync(company);
+        await _dbContext.Branches.AddAsync(branch);
+        await _dbContext.SaveChangesAsync(CancellationToken.None);
         
         var command = new CreateServiceCommand(
             1,
@@ -60,6 +69,13 @@ public class CreateCompanyServiceCommandHandlerTests
     public async Task Handle_Should_Return_CompanyServiceResponse()
     {
         // Arrange
+        
+        
+        var company = TestDataSeeder.CreateCompany();
+        var branch = TestDataSeeder.CreateBranch();
+        await _dbContext.Companies.AddAsync(company);
+        await _dbContext.Branches.AddAsync(branch);
+        await _dbContext.SaveChangesAsync(CancellationToken.None);
 
         var command = new CreateServiceCommand(
             1,
@@ -79,6 +95,60 @@ public class CreateCompanyServiceCommandHandlerTests
         result.Should().NotBeNull();
 
         result.ServiceName.Should().Be(command.ServiceName);
+    }
+    
+    [Fact]
+    public async Task Handle_Should_Return_CompanyNotFound()
+    {
+        //Arrange
+        
+        var command = new CreateServiceCommand(
+            1,
+            1,
+            "Test CompanyService Name",
+            "Test CompanyService Description",
+            45);
+
+        // Act
+
+        var result =  _handler.Handle(
+            command,
+            CancellationToken.None);
+
+        // Assert
+
+        var exception = result.ShouldThrow<HttpStatusCodeException>();
+        exception.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+        exception.Message.ShouldBe($"Company with Id {command.CompanyId} not found");
+    }
+    
+    [Fact]
+    public async Task Handle_Should_Return_BranchNotFound()
+    {
+        //Arrange
+        
+        var company = TestDataSeeder.CreateCompany();
+        await _dbContext.Companies.AddAsync(company);
+        await _dbContext.SaveChangesAsync(CancellationToken.None);
+        var command = new CreateServiceCommand(
+            1,
+            1,
+            "Test CompanyService Name",
+            "Test CompanyService Description",
+            45);
+
+        // Act
+
+        var result =  _handler.Handle(
+            command,
+            CancellationToken.None);
+
+        // Assert
+
+        var exception = result.ShouldThrow<HttpStatusCodeException>();
+        exception.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+        exception.Message.ShouldBe($"Branch with Id {command.BranchId} not found");
+        
     }
 
 }

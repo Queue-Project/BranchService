@@ -31,8 +31,10 @@ public class DeleteCompanyServiceCommandHandlerTests
     {
         
         //Arrange
+        var company = TestDataSeeder.CreateCompany();
         var companyService = TestDataSeeder.CreateCompanyService();
 
+        await _dbContext.Companies.AddAsync(company, CancellationToken.None);
         await _dbContext.CompanyServices.AddAsync(companyService, CancellationToken.None);
         await _dbContext.SaveChangesAsync(CancellationToken.None);
 
