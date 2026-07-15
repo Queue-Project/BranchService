@@ -143,8 +143,10 @@ public static class TestDataSeeder
         {
             Id = 1,
             CompanyId = 1,
+            BranchId = 1,
             ServiceName = "Test CompanyService Name",
             ServiceDescription = "Test CompanyService Description",
+            ServiceDuration = 30,
             CreatedAt = DateTimeOffset.UtcNow
         };
     }
@@ -158,16 +160,20 @@ public static class TestDataSeeder
             {
                 Id = 2,
                 CompanyId = 1,
+                BranchId = 1,
                 ServiceName = "Test CompanyService Name2",
                 ServiceDescription = "Test CompanyService Description2",
+                ServiceDuration = 30,
                 CreatedAt = DateTimeOffset.UtcNow
             },
             new CompanyServiceEntity
             {
                 Id = 3,
                 CompanyId = 1,
+                BranchId = 1,
                 ServiceName = "Test CompanyService Name3",
                 ServiceDescription = "Test CompanyService Description3",
+                ServiceDuration = 30,
                 CreatedAt = DateTimeOffset.UtcNow
             }
         };
