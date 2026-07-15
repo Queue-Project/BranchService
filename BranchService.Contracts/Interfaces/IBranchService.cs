@@ -13,5 +13,10 @@ public interface IBranchService: IService<IBranchService>
 
     UnaryResult<List<BranchResponse>> GetCompanyBranches(int companyId);
     UnaryResult<List<CompanyServiceResponse>> GetCompanyServices(int companyId);
+    UnaryResult<List<CompanyDetailsResponse>> GetCompanyDetails(List<int> companyIds);
+
+    UnaryResult<List<BranchDetailsResponse>> GetBranchDetails(List<int> branchIds);
+
+    UnaryResult<List<ServiceDetailsResponse>> GetServiceDetails(List<int> serviceIds);
 
 }

@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Authors>QueueProject</Authors>
-        <Version>1.0.7</Version>
+        <Version>1.0.8-dev.1</Version>
     </PropertyGroup>
 
     <ItemGroup>

@@ -260,4 +260,88 @@ public class BranchService : ServiceBase<IBranchService>, IBranchService
 
         return response;
     }
+
+    public async UnaryResult<List<CompanyDetailsResponse>> GetCompanyDetails(List<int> companyIds)
+    {
+        if (companyIds.Count == 0)
+        {
+            return [];
+        }
+
+        companyIds = companyIds.Distinct().ToList();
+
+        var companies = await _dbContext.Companies
+            .AsNoTracking()
+            .Where(x => companyIds.Contains(x.Id))
+            .Select(x => new CompanyDetailsResponse
+            {
+                CompanyId = x.Id,
+                CompanyName = x.CompanyName,
+                CompanyCategory = (CompanyCategory)x.CompanyCategory,
+                Address = x.Address,
+                EmailAddress = x.EmailAddress,
+                PhoneNumber = x.PhoneNumber
+            })
+            .ToListAsync();
+
+        return companies;
+    }
+
+    public async UnaryResult<List<BranchDetailsResponse>> GetBranchDetails(List<int> branchIds)
+    {
+        if (branchIds.Count == 0)
+        {
+            return [];
+        }
+
+        branchIds = branchIds.Distinct().ToList();
+
+        var branches = await _dbContext.Branches
+            .AsNoTracking()
+            .Include(s => s.Company)
+            .Where(x => branchIds.Contains(x.Id))
+            .Select(x => new BranchDetailsResponse()
+            {
+                BranchId = x.Id,
+                CompanyId = x.CompanyId,
+                BranchName = x.BranchName,
+                CompanyName = x.Company.CompanyName,
+                Address = x.Address,
+                PhoneNumber = x.PhoneNumber,
+                IsActive = x.IsActive
+            })
+            .ToListAsync();
+
+        return branches;
+    }
+
+    public async UnaryResult<List<ServiceDetailsResponse>> GetServiceDetails(List<int> serviceIds)
+    {
+        if (serviceIds.Count == 0)
+        {
+            return [];
+        }
+
+        serviceIds = serviceIds.Distinct().ToList();
+
+        var services = await _dbContext.CompanyServices
+            .AsNoTracking()
+            .Include(s => s.Company)
+            .Include(s => s.Branch)
+            .Where(x => serviceIds.Contains(x.Id))
+            .Select(x => new ServiceDetailsResponse()
+            {
+                ServiceId = x.Id,
+                BranchId = x.BranchId,
+                CompanyId = x.CompanyId,
+                ServiceName = x.ServiceName,
+                BranchName = x.Branch.BranchName,
+                CompanyName = x.Company.CompanyName,
+                Description = x.ServiceDescription,
+                ServiceDuration = x.ServiceDuration
+            })
+            .ToListAsync();
+
+        return services;
+    }
 }
