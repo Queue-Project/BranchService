@@ -1,9 +1,10 @@
 using System.Net;
 using System.Net.Http.Json;
-using BranchService.Application.Exceptions;
 using BranchService.Application.Response;
+using BranchService.Application.UseCases.Branches.Commands.CreateBranch;
 using BranchService.Application.UseCases.Companies.Commands.CreateCompany;
 using BranchService.Application.UseCases.CompanyServices.Commands.CreateService;
+using BranchService.Domain.Enums;
 using Shouldly;
 using Xunit;
 
@@ -27,7 +28,8 @@ public class CompanyServiceControllerTest : IClassFixture<QBranchServiceWebAppli
             CompanyName: "TestCompany",
             Address: "TestAddress",
             EmailAddress: "test@gmail.com",
-            PhoneNumber: "+992921111112");
+            PhoneNumber: "+992921111112",
+            CompanyCategory.Beauty);
 
         var companyResponse = await _client.PostAsJsonAsync("/api/Company", createCompanyCommand);
 
@@ -36,10 +38,27 @@ public class CompanyServiceControllerTest : IClassFixture<QBranchServiceWebAppli
         companyResult.ShouldNotBeNull();
         companyResult.Id.ShouldNotBe(0);
 
+        var createBranchCommand = new CreateBranchCommand(
+            CompanyId: companyResult.Id,
+            BranchName: "TestBranchName",
+            Address: "TestAddress",
+            City: "TestCity",
+            EmailAddress: "test@gmail.com",
+            PhoneNumber: "+992981111112");
+
+        var branchResponse = await _client.PostAsJsonAsync("/api/Branch", createBranchCommand);
+        branchResponse.EnsureSuccessStatusCode();
+        var branchResult = await branchResponse.Content.ReadFromJsonAsync<BranchResponseModel>();
+        branchResult.ShouldNotBeNull();
+        branchResult.Id.ShouldNotBe(0);
+
+
         var createCompanyService = new CreateServiceCommand(
             CompanyId: companyResult.Id,
+            BranchId: branchResult.Id,
             ServiceName: "TestServiceName",
-            ServiceDescription: "TestServiceDescription");
+            ServiceDescription: "TestServiceDescription",
+            ServiceDuration: 45);
 
         var response = await _client.PostAsJsonAsync("/api/CompanyService", createCompanyService);
         response.EnsureSuccessStatusCode();
@@ -55,7 +74,8 @@ public class CompanyServiceControllerTest : IClassFixture<QBranchServiceWebAppli
             CompanyName: "TestCompany",
             Address: "TestAddress",
             EmailAddress: "test@gmail.com",
-            PhoneNumber: "+992921111112");
+            PhoneNumber: "+992921111112",
+            CompanyCategory.Beauty);
 
         var companyCreatedResponse = await _client.PostAsJsonAsync("/api/Company", createCompanyCommand);
 
@@ -64,10 +84,26 @@ public class CompanyServiceControllerTest : IClassFixture<QBranchServiceWebAppli
         companyCreatedResult.ShouldNotBeNull();
         companyCreatedResult.Id.ShouldNotBe(0);
 
+        var createBranchCommand = new CreateBranchCommand(
+            CompanyId: companyCreatedResult.Id,
+            BranchName: "TestBranchName",
+            Address: "TestAddress",
+            City: "TestCity",
+            EmailAddress: "test@gmail.com",
+            PhoneNumber: "+992981111112");
+
+        var branchResponse = await _client.PostAsJsonAsync("/api/Branch", createBranchCommand);
+        branchResponse.EnsureSuccessStatusCode();
+        var branchResult = await branchResponse.Content.ReadFromJsonAsync<BranchResponseModel>();
+        branchResult.ShouldNotBeNull();
+        branchResult.Id.ShouldNotBe(0);
+
         var createCompanyService = new CreateServiceCommand(
             CompanyId: companyCreatedResult.Id,
+            BranchId: branchResult.Id,
             ServiceName: "TestServiceName",
-            ServiceDescription: "TestServiceDescription");
+            ServiceDescription: "TestServiceDescription",
+            ServiceDuration: 45);
 
         var companyServiceCreatedResponse = await _client.PostAsJsonAsync("/api/CompanyService", createCompanyService);
         companyServiceCreatedResponse.EnsureSuccessStatusCode();

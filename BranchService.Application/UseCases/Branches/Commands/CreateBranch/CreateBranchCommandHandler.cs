@@ -4,6 +4,7 @@ using BranchService.Application.Interfaces.Data;
 using BranchService.Application.Response;
 using BranchService.Contracts.Events;
 using BranchService.Contracts.Events.BranchEvents;
+using BranchService.Contracts.Events.Enums;
 using BranchService.Domain.Models;
 using MassTransit;
 using MediatR;
@@ -60,6 +61,7 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, B
             OccuredAt = DateTimeOffset.UtcNow,
             BranchId = branch.Id,
             CompanyId = branch.CompanyId,
+            CompanyCategory = (CompanyCategory) company.CompanyCategory,
             BranchName = branch.BranchName,
             City = branch.City,
             Address = branch.Address,

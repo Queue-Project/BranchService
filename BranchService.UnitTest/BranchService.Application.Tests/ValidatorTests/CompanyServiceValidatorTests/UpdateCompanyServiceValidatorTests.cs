@@ -18,9 +18,9 @@ public class UpdateCompanyServiceValidatorTests
     {
         var command = new UpdateCompanyServiceRequest
         {
-            CompanyId = 1,
             ServiceName = "Test Name",
-            ServiceDescription = "Test Service Description"
+            ServiceDescription = "Test Service Description",
+            ServiceDuration = 45,
         };
 
         var result = _validator.TestValidate(command);
@@ -33,7 +33,6 @@ public class UpdateCompanyServiceValidatorTests
     {
         var command = new UpdateCompanyServiceRequest
         {
-            CompanyId = 1,
             ServiceName = "",
             ServiceDescription = "Test Service Description"
         };
@@ -48,7 +47,6 @@ public class UpdateCompanyServiceValidatorTests
     {
         var command = new UpdateCompanyServiceRequest
         {
-            CompanyId = 1,
             ServiceName = "Test Name",
             ServiceDescription = ""
         };
@@ -58,19 +56,19 @@ public class UpdateCompanyServiceValidatorTests
             .WithErrorMessage("ServiceDescription is required.");
     }
 
-    [Theory]
-    [InlineData(0)]
-    public void Validator_WhenCompanyIdIsInvalid_ShouldHaveValidationError(int invalidCompanyId)
+
+    [Fact]
+    public async Task Validator_WhenServiceDurationIsSmallerThan15_ShouldHaveValidationError()
     {
         var command = new UpdateCompanyServiceRequest
         {
-            CompanyId = invalidCompanyId,
             ServiceName = "Test Name",
-            ServiceDescription = "Test Service Description"
+            ServiceDescription = "Test Service Description",
+            ServiceDuration = 10
         };
 
         var result = _validator.TestValidate(command);
-        result.ShouldHaveValidationErrorFor(s => s.CompanyId)
-            .WithErrorMessage("CompanyId is required.");
+        result.ShouldHaveValidationErrorFor(s => s.ServiceDuration)
+            .WithErrorMessage("Duration time ,must be greater than or equal to 15 .");
     }
 }

@@ -34,8 +34,10 @@ public class GetServiceByIdQueryHandler: IRequestHandler<GetServiceByIdQuery, Co
         {
             Id = dbService.Id,
             CompanyId = dbService.CompanyId,
+            BranchId = dbService.BranchId,
             ServiceName = dbService.ServiceName,
-            ServiceDescription = dbService.ServiceDescription
+            ServiceDescription = dbService.ServiceDescription,
+            ServiceDuration = dbService.ServiceDuration
         };
 
         _logger.LogInformation("Service with Id {id} fetched successfully.", request.Id);

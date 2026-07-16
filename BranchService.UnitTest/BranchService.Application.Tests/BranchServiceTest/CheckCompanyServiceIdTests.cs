@@ -29,6 +29,7 @@ public class CheckCompanyServiceIdTests
         {
             RequestId = Guid.NewGuid(),
             CompanyId = 1,
+            BranchId = 1,
             CompanyServiceId = 1,
             RequestedAt = DateTimeOffset.UtcNow
         };
@@ -60,6 +61,7 @@ public class CheckCompanyServiceIdTests
         {
             RequestId = Guid.NewGuid(),
             CompanyId = 1,
+            BranchId = 1,
             CompanyServiceId = 1,
             RequestedAt = DateTimeOffset.UtcNow
         };

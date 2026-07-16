@@ -1,10 +1,10 @@
 using System.Net;
 using System.Net.Http.Json;
-using BranchService.Application.Exceptions;
 using BranchService.Application.Response;
 using BranchService.Application.UseCases.BranchConfigurations.Commands.CreateBranchConfiguration;
 using BranchService.Application.UseCases.Branches.Commands.CreateBranch;
 using BranchService.Application.UseCases.Companies.Commands.CreateCompany;
+using BranchService.Domain.Enums;
 using Shouldly;
 using Xunit;
 
@@ -29,7 +29,8 @@ public class BranchConfigurationControllerTests : IClassFixture<QBranchServiceWe
             CompanyName: "TestCompany",
             Address: "TestAddress",
             EmailAddress: "test@gmail.com",
-            PhoneNumber: "+992921111112");
+            PhoneNumber: "+992921111112",
+            CompanyCategory.Beauty);
 
         var companyResponse = await _client.PostAsJsonAsync("/api/Company", createCompanyCommand);
 
@@ -76,7 +77,8 @@ public class BranchConfigurationControllerTests : IClassFixture<QBranchServiceWe
             CompanyName: "TestCompany",
             Address: "TestAddress",
             EmailAddress: "test@gmail.com",
-            PhoneNumber: "+992921111112");
+            PhoneNumber: "+992921111112",
+            CompanyCategory.Beauty);
 
         var companyCreateResponse = await _client.PostAsJsonAsync("/api/Company", createCompanyCommand);
 

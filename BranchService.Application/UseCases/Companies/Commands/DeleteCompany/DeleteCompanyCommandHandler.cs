@@ -3,6 +3,7 @@ using BranchService.Application.Exceptions;
 using BranchService.Application.Interfaces.Data;
 using BranchService.Contracts.Events;
 using BranchService.Contracts.Events.CompanyEvents;
+using BranchService.Contracts.Events.Enums;
 using BranchService.Domain.Models;
 using MassTransit;
 using MediatR;
@@ -45,6 +46,8 @@ public class DeleteCompanyCommandHandler: IRequestHandler<DeleteCompanyCommand, 
             Address = dbCompany.Address,
             EmailAddress = dbCompany.EmailAddress,
             PhoneNumber = dbCompany.PhoneNumber,
+            CompanyCategory = (CompanyCategory)dbCompany.CompanyCategory,
+            
             AuditData = new AuditData
             {
                 PerformedByUserId = 1,

@@ -2,6 +2,7 @@ using System.Net;
 using BranchService.Application.Exceptions;
 using BranchService.Application.UseCases.Companies.Commands.UpdateCompany;
 using BranchService.Contracts.Events.CompanyEvents;
+using BranchService.Contracts.Events.Enums;
 using BranchService.Infrastructure.Persistence.DataBase;
 using BranchService.UnitTest.BranchService.Application.Tests.Infrastructure;
 using FluentAssertions;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Shouldly;
+using CompanyCategory = BranchService.Domain.Enums.CompanyCategory;
 
 namespace BranchService.UnitTest.BranchService.Application.Tests.CompanyTests;
 
@@ -45,7 +47,9 @@ public class UpdateCompanyCommandHandlerTests
             "Google",
             "California",
             "google@test.com",
-            "+123456789");
+            "+123456789",
+            CompanyCategory.Beauty
+            );
         
         
         //Act
@@ -74,7 +78,9 @@ public class UpdateCompanyCommandHandlerTests
             "Google",
             "California",
             "google@test.com",
-            "+123456789");
+            "+123456789",
+            CompanyCategory.Beauty
+            );
         
         
         //Act
@@ -102,7 +108,9 @@ public class UpdateCompanyCommandHandlerTests
             "Google",
             "California",
             "google@test.com",
-            "+123456789");
+            "+123456789",
+            CompanyCategory.Beauty
+            );
         
         
         //Act

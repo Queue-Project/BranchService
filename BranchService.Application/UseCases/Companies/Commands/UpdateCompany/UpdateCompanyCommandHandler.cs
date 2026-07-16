@@ -5,6 +5,7 @@ using BranchService.Application.Interfaces.Data;
 using BranchService.Application.Response;
 using BranchService.Contracts.Events;
 using BranchService.Contracts.Events.CompanyEvents;
+using BranchService.Contracts.Events.Enums;
 using BranchService.Domain.Models;
 using MassTransit;
 using MediatR;
@@ -40,7 +41,7 @@ public class UpdateCompanyCommandHandler: IRequestHandler<UpdateCompanyCommand, 
         dbCompany.Address = request.Address;
         dbCompany.EmailAddress = request.EmailAddress;
         dbCompany.PhoneNumber = request.PhoneNumber;
-        
+        dbCompany.CompanyCategory = request.CompanyCategory;
         var entry = _dbContext.Entry(dbCompany);
         var changes = AuditHelper.GetChanges(entry);
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -55,6 +56,7 @@ public class UpdateCompanyCommandHandler: IRequestHandler<UpdateCompanyCommand, 
             Address = dbCompany.Address,
             EmailAddress = dbCompany.EmailAddress,
             PhoneNumber = dbCompany.PhoneNumber,
+            CompanyCategory = (CompanyCategory)dbCompany.CompanyCategory,
             AuditData = new AuditData
             {
                 PerformedByUserId = 1,
@@ -69,7 +71,8 @@ public class UpdateCompanyCommandHandler: IRequestHandler<UpdateCompanyCommand, 
             CompanyName = dbCompany.CompanyName,
             Address = dbCompany.Address,
             EmailAddress = dbCompany.EmailAddress,
-            PhoneNumber = dbCompany.PhoneNumber
+            PhoneNumber = dbCompany.PhoneNumber,
+            CompanyCategory = dbCompany.CompanyCategory,
         };
 
         return response;

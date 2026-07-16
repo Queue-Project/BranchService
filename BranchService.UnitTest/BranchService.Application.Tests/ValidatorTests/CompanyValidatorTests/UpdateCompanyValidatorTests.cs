@@ -1,5 +1,6 @@
 using BranchService.Application.Requests;
 using BranchService.Application.Validators.CompanyValidators;
+using BranchService.Domain.Enums;
 using FluentValidation.TestHelper;
 
 namespace BranchService.UnitTest.BranchService.Application.Tests.ValidatorTests.CompanyValidatorTests;
@@ -21,7 +22,8 @@ public class UpdateCompanyValidatorTests
             CompanyName = "Test Name",
             Address = "Test Address",
             EmailAddress = "test@gmail.com",
-            PhoneNumber = "+992923324252"
+            PhoneNumber = "+992923324252",
+            CompanyCategory = CompanyCategory.Beauty,
         };
 
         var result = _validator.TestValidate(command);

@@ -1,6 +1,7 @@
 using BranchService.API.Controllers;
 using BranchService.Application.Response;
 using BranchService.Application.UseCases.Companies.Commands.CreateCompany;
+using BranchService.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -31,7 +32,8 @@ public class CreateCompanyEndpointTests
             "Test Company",
             "123 Test Street",
             "test@company.com",
-            "+992924567686"
+            "+992924567686",
+            CompanyCategory.Beauty
         );
 
         var expectedResponse = new CompanyResponseModel
@@ -40,11 +42,12 @@ public class CreateCompanyEndpointTests
             CompanyName = "Test Company",
             Address = "Test Street",
             EmailAddress = "test@company.com",
-            PhoneNumber = "992923324252"
+            PhoneNumber = "992923324252",
+            CompanyCategory = CompanyCategory.Beauty
         };
 
         _mockMediator
-            .Setup(m => m.Send(createCompanyCommand,It.IsAny<CancellationToken>()))
+            .Setup(m => m.Send(createCompanyCommand, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResponse);
 
         // Act
@@ -52,11 +55,10 @@ public class CreateCompanyEndpointTests
 
         // Assert
         var okResult = result.ShouldBeOfType<OkObjectResult>();
-        var returnValue= okResult.Value.ShouldBeOfType<CompanyResponseModel>();   
-        
+        var returnValue = okResult.Value.ShouldBeOfType<CompanyResponseModel>();
+
         returnValue.Id.ShouldBe(expectedResponse.Id);
         returnValue.CompanyName.ShouldBe(expectedResponse.CompanyName);
-        
     }
 
     [Fact]
@@ -66,23 +68,22 @@ public class CreateCompanyEndpointTests
         var createCompanyCommand = new CreateCompanyCommand(
             CompanyName: "",
             Address: "123 Test Street",
-            EmailAddress: "invalid-email", 
-            PhoneNumber: "123" 
+            EmailAddress: "invalid-email",
+            PhoneNumber: "123",
+            CompanyCategory.Beauty
+            
         );
 
         _mockMediator
             .Setup(m => m.Send(createCompanyCommand, It.IsAny<CancellationToken>()))
             .ThrowsAsync(new FluentValidation.ValidationException("Validation failed"));
-        
-        
+
+
         //Act
-        var result =  _companyController.PostAsync(createCompanyCommand);
+        var result = _companyController.PostAsync(createCompanyCommand);
 
         //Assert
-        var exception=  result.ShouldThrow<FluentValidation.ValidationException>();
+        var exception = result.ShouldThrow<FluentValidation.ValidationException>();
         exception.Message.ShouldBe("Validation failed");
-    
-        
     }
-    
 }

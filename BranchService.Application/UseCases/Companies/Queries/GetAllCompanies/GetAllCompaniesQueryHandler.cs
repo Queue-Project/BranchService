@@ -38,7 +38,8 @@ public class GetAllCompaniesQueryHandler: IRequestHandler<GetAllCompaniesQuery, 
             CompanyName = company.CompanyName,
             Address = company.Address,
             EmailAddress = company.EmailAddress,
-            PhoneNumber = company.PhoneNumber
+            PhoneNumber = company.PhoneNumber,
+            CompanyCategory = company.CompanyCategory,
         }).ToList();
 
 

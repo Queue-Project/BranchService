@@ -92,6 +92,7 @@ public class GetCompanyInfoByIdQueryHandler : IRequestHandler<GetCompanyInfoById
             Address = dbCompany.Address,
             EmailAddress = dbCompany.EmailAddress,
             PhoneNumber = dbCompany.PhoneNumber,
+            CompanyCategory = dbCompany.CompanyCategory,
             CreatedAt = dbCompany.CreatedAt,
             TotalBranches = branchResponseList.Count,
             Branches = branchResponseList,

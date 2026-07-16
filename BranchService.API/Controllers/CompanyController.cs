@@ -76,7 +76,7 @@ public class CompanyController : ControllerBase
         _logger.LogInformation("Received request to update company with Id: {companyId}", id);
 
         var command = new UpdateCompanyCommand(id, request.CompanyName, request.Address, request.EmailAddress,
-            request.PhoneNumber);
+            request.PhoneNumber, request.CompanyCategory);
         
         var update = await _mediator.Send(command);
         _logger.LogInformation("Successfully updated company with Id: {companyId}", id);

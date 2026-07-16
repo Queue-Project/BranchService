@@ -56,7 +56,7 @@ public class CompanyServiceController : ControllerBase
     public async Task<IActionResult> Put([FromRoute] int id, [FromBody] UpdateCompanyServiceRequest request)
     {
         _logger.LogInformation("Received request to update service with Id: {serviceId}", id);
-        var command = new UpdateServiceCommand(id, request.CompanyId, request.ServiceName, request.ServiceDescription);
+        var command = new UpdateServiceCommand(id, request.ServiceName, request.ServiceDescription, request.ServiceDuration);
         var update = await _mediator.Send(command);
         _logger.LogInformation("Successfully updated service with Id: {serviceId}", id);
         return Ok(update);

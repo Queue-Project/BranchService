@@ -43,9 +43,9 @@ public class UpdateCompanyServiceCommandHandlerTests
         
         var command = new UpdateServiceCommand(
             1,
-            1,
             "Update CompanyService Name",
-            "Update CompanyService Description");
+            "Update CompanyService Description",
+            45);
         
         
         //Act
@@ -66,9 +66,9 @@ public class UpdateCompanyServiceCommandHandlerTests
     {
         var command = new UpdateServiceCommand(
             1,
-            1,
             "Update CompanyService Name",
-            "Update CompanyService Description");
+            "Update CompanyService Description",
+            45);
         
         
         //Act
@@ -95,9 +95,9 @@ public class UpdateCompanyServiceCommandHandlerTests
         
         var command = new UpdateServiceCommand(
             1,
-            1,
             "Update CompanyService Name",
-            "Update CompanyService Description");
+            "Update CompanyService Description",
+            45);
         
         
         //Act
@@ -110,30 +110,7 @@ public class UpdateCompanyServiceCommandHandlerTests
         
     }
 
-
-    [Fact]
-    public async Task Should_Return_CompanyNotFound()
-    {
-        //Arrange
-        var companyService = TestDataSeeder.CreateCompanyService();
-        
-        await _dbContext.CompanyServices.AddAsync(companyService, CancellationToken.None);
-        await _dbContext.SaveChangesAsync(CancellationToken.None);
-        
-        var command = new UpdateServiceCommand(
-            1,
-            1,
-            "Update CompanyService Name",
-            "Update CompanyService Description");
-        
-        //Act
-        var result =  _handler.Handle(command, CancellationToken.None);
-        
-        
-        //Assert
-        var exception = result.ShouldThrow<HttpStatusCodeException>();
-        exception.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-    }
+    
 
     [Fact]
     public async Task Handle_Should_Return_ServiceNotFound()
@@ -147,9 +124,9 @@ public class UpdateCompanyServiceCommandHandlerTests
 
         var command = new UpdateServiceCommand(
             1,
-            1,
             "Update CompanyService Name",
-            "Update CompanyService Description");
+            "Update CompanyService Description",
+            45);
         
         //Act
         var result =  _handler.Handle(command, CancellationToken.None);

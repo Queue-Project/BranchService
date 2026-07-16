@@ -13,4 +13,6 @@ public class BranchEntity
 
     public int CompanyId { get; set; }
     public CompanyEntity Company { get; set; }
+
+    public List<CompanyServiceEntity> CompanyServices { get; set; } = [];
 }

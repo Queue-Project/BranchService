@@ -5,6 +5,7 @@ using BranchService.Application.Interfaces.Data;
 using BranchService.Application.Response;
 using BranchService.Contracts.Events;
 using BranchService.Contracts.Events.CompanyServiceEvents;
+using BranchService.Contracts.Events.Enums;
 using BranchService.Domain.Models;
 using MassTransit;
 using MediatR;
@@ -30,13 +31,6 @@ public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand,
     public async Task<CompanyServiceResponseModel> Handle(UpdateServiceCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Updating service with Id {id}.", request.Id);
-
-        var company = await _dbContext.Companies.FirstOrDefaultAsync(s => s.Id == request.CompanyId, cancellationToken);
-        if (company== null)
-        {
-            _logger.LogWarning("Company with Id {id} not found.", request.CompanyId);
-            throw new HttpStatusCodeException(HttpStatusCode.NotFound, nameof(CompanyEntity));
-        }
         
         var dbService = await _dbContext.CompanyServices.FirstOrDefaultAsync(s => s.Id == request.Id, cancellationToken);
         if (dbService == null)
@@ -45,11 +39,13 @@ public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand,
             throw new HttpStatusCodeException(HttpStatusCode.NotFound, nameof(CompanyServiceEntity));
         }
 
+        var dbCompany = await _dbContext.Companies.FirstOrDefaultAsync(s => s.Id == dbService.CompanyId, cancellationToken);
 
-        dbService.CompanyId = request.CompanyId;
         dbService.ServiceName = request.ServiceName;
         dbService.ServiceDescription = request.ServiceDescription;
-
+        dbService.ServiceDuration = request.ServiceDuration;
+        
+        
         var entry = _dbContext.Entry(dbService);
         var changes = AuditHelper.GetChanges(entry);
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -63,8 +59,11 @@ public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand,
             OccuredAt = DateTimeOffset.UtcNow,
             CompanyServiceId = dbService.Id,
             CompanyId = dbService.CompanyId,
+            CompanyCategory =(CompanyCategory)dbCompany!.CompanyCategory,
+            BranchId = dbService.BranchId,
             ServiceDescription = dbService.ServiceDescription,
             ServiceName = dbService.ServiceName,
+            ServiceDuration = dbService.ServiceDuration,
             AuditData = new AuditData
             {
                 PerformedByUserId = 1,
@@ -77,8 +76,10 @@ public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand,
         {
             Id = dbService.Id,
             CompanyId = dbService.CompanyId,
+            BranchId = dbService.BranchId,
             ServiceName = dbService.ServiceName,
-            ServiceDescription = dbService.ServiceDescription
+            ServiceDescription = dbService.ServiceDescription,
+            ServiceDuration = dbService.ServiceDuration,
         };
 
         return response;

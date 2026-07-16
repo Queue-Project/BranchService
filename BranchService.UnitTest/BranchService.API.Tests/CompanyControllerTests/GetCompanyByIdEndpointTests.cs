@@ -3,6 +3,7 @@ using BranchService.API.Controllers;
 using BranchService.Application.Exceptions;
 using BranchService.Application.Response;
 using BranchService.Application.UseCases.Companies.Queries.GetCompanyById;
+using BranchService.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -36,7 +37,9 @@ public class GetCompanyByIdEndpointTests
             CompanyName = "Test Company",
             Address = "Test Street",
             EmailAddress = "test@company.com",
-            PhoneNumber = "992923324252"
+            PhoneNumber = "992923324252",
+            CompanyCategory = CompanyCategory.Beauty
+            
         };
 
         _mockMediator

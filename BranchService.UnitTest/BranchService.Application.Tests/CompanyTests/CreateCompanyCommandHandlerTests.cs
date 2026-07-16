@@ -1,5 +1,6 @@
 using BranchService.Application.UseCases.Companies.Commands.CreateCompany;
 using BranchService.Contracts.Events.CompanyEvents;
+using BranchService.Domain.Enums;
 using BranchService.Infrastructure.Persistence.DataBase;
 using BranchService.UnitTest.BranchService.Application.Tests.Infrastructure;
 using FluentAssertions;
@@ -35,7 +36,8 @@ public class CreateCompanyCommandHandlerTests
             "Google",
             "California",
             "google@test.com",
-            "+123456789");
+            "+123456789",
+            CompanyCategory.Beauty);
 
         // Act
 
@@ -72,7 +74,8 @@ public class CreateCompanyCommandHandlerTests
             "Google",
             "California",
             "google@test.com",
-            "+123456789");
+            "+123456789",
+            CompanyCategory.Beauty);
 
         // Act
 

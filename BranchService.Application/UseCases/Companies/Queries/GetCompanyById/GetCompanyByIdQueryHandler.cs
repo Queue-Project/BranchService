@@ -38,6 +38,7 @@ public class GetCompanyByIdQueryHandler: IRequestHandler<GetCompanyByIdQuery, Co
             Address = dbCompany.Address,
             EmailAddress = dbCompany.EmailAddress,
             PhoneNumber = dbCompany.PhoneNumber,
+            CompanyCategory = dbCompany.CompanyCategory,
             CreatedAt = dbCompany.CreatedAt
         };
 

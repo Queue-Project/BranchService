@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BranchService.Infrastructure.Persistence.TableConfiguration;
 
-public class CompanyServiceTableConfiguration: IEntityTypeConfiguration<CompanyServiceEntity>
+public class CompanyServiceTableConfiguration : IEntityTypeConfiguration<CompanyServiceEntity>
 {
     public void Configure(EntityTypeBuilder<CompanyServiceEntity> builder)
     {
@@ -14,6 +14,10 @@ public class CompanyServiceTableConfiguration: IEntityTypeConfiguration<CompanyS
         builder.HasOne(s => s.Company)
             .WithMany(s => s.CompanyServices)
             .HasForeignKey(s => s.CompanyId);
+        
+        builder.HasOne(s => s.Branch)
+            .WithMany(s => s.CompanyServices)
+            .HasForeignKey(s => s.BranchId);
 
     }
 }

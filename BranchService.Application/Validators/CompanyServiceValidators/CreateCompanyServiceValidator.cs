@@ -11,6 +11,12 @@ public class CreateCompanyServiceValidator: AbstractValidator<CreateServiceComma
             .NotEmpty().WithMessage("CompanyId is required.")
             .GreaterThan(0).WithMessage("CompanyId ,must be greater than 0.");
             
+        RuleFor(s => s.BranchId)
+            .NotEmpty().WithMessage("BranchId is required.")
+            .GreaterThan(0).WithMessage("BranchId ,must be greater than 0.");
+        RuleFor(s => s.ServiceDuration)
+            .NotEmpty().WithMessage("ServiceDuration is required.")
+            .GreaterThanOrEqualTo(15).WithMessage("Duration time ,must be greater than or equal to 15 .");
         
         RuleFor(s => s.ServiceName)
             .NotEmpty().WithMessage("Service name is required.")
